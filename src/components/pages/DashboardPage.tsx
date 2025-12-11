@@ -42,7 +42,7 @@ const DashboardPage: React.FC = () => {
 
             {/* 2. 식물 목록 영역 */}
             {plants.length === 0 ? (
-                <div className="text-center p-12 bg-white rounded-xl shadow-inner border border-stone-100">
+                <div className="text-center p-12  rounded-xl shadow-inner border border-stone-100 bg-white" >
                     <p className="text-stone-500 mb-4">아직 정원에 식물이 없어요! '나의 정원'에서 식물을 등록해주세요.</p>
                 </div>
             ) : (
