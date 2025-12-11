@@ -57,7 +57,7 @@ const MoodLogPage: React.FC = () => {
                                 labelLine={false}
                             >
                                 {moodCounts.map((entry, index) => (
-                                    // 💡 정의한 커스텀 색상을 Cell에 적용
+                                    // 정의한 커스텀 색상을 Cell에 적용
                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                             </Pie>

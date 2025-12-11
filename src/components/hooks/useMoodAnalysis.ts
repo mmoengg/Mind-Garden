@@ -6,6 +6,7 @@ interface MoodCount {
     mood: string;
     count: number;
     color: string;
+    [key: string]: string | number;
 }
 
 // 감정 타입별 색상 매핑

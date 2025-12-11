@@ -15,7 +15,7 @@ const AddPlantPage: React.FC = () => {
     const [species, setSpecies] = useState('');
     const [description, setDescription] = useState(''); // 설명 필드 추가
     const [waterCycle, setWaterCycle] = useState(7); // 기본값 7일
-    const [adoptedDate, setAdoptedDate] = useState(new Date().toISOString().slice(0, 10)); // 오늘 날짜 기본값
+    const [adoptedDate, setAdoptedDate] = useState(new Date().toISOString().slice(0, 10));
     const [coverImage, setCoverImage] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -48,7 +48,29 @@ const AddPlantPage: React.FC = () => {
 
         addPlant(newPlant);
         alert(`${name}의 정원 생활을 시작합니다!`);
-        navigate('/my-plants'); // 등록 후 대시보드로 이동
+        navigate('/my-plants');
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 1024 * 1024 * 3) { // 3MB 제한 (localStorage 보호를 위해)
+                alert('파일 크기가 너무 큽니다. 3MB 이하의 이미지를 사용해주세요.');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            // 파일 읽기가 완료되면 Base64 문자열로 저장
+            reader.onloadend = () => {
+                setCoverImage(reader.result as string);
+            };
+
+            // 파일을 Base64 데이터 URL 형태로 읽습니다.
+            reader.readAsDataURL(file);
+        } else {
+            setCoverImage('');
+        }
     };
 
     // 폼 입력 필드 컴포넌트 (반복되는 디자인 간소화)
@@ -140,14 +162,37 @@ const AddPlantPage: React.FC = () => {
                 />
 
                 {/* 사진 및 메모 */}
-                <InputField
-                    label="대표 사진 URL (선택)"
-                    id="coverImage"
-                    value={coverImage}
-                    onChange={(e) => setCoverImage(e.target.value)}
-                    icon={Camera}
-                    placeholder="사진 URL을 직접 입력 (나중에 파일 업로드로 대체됩니다)"
-                />
+                <div className="mb-6">
+                    <label htmlFor="coverImage" className="block text-sm font-semibold text-stone-700 mb-2">
+                        대표 사진 등록 (선택)
+                    </label>
+                    <div className="flex flex-col items-center border border-stone-300 rounded-xl p-3 bg-white">
+                        <input
+                            id="coverImage"
+                            type="file"
+                            accept="image/*" // 이미지 파일만 받음
+                            onChange={handleImageChange} // 파일 변경 핸들러 연결
+                            className="w-full text-stone-700 focus:outline-none"
+                        />
+
+                        {/* 미리보기 영역 */}
+                        {coverImage && (
+                            <div className="mt-4 w-full h-32 rounded-lg overflow-hidden border border-primary-200">
+                                <img
+                                    src={coverImage}
+                                    alt="미리보기"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        )}
+
+                        {!coverImage && (
+                            <div className="flex items-center text-stone-400 mt-2 text-sm">
+                                <Camera size={16} className="mr-2" /> 3MB 이하의 JPG/PNG 파일을 선택해주세요.
+                            </div>
+                        )}
+                    </div>
+                </div>
 
                 <InputField
                     label="식물 설명/입양 메모 (선택)"
