@@ -1,57 +1,69 @@
-import React, { useState } from 'react';
-import { usePlants } from '../hooks/usePlants';
-import PlantCard from "../plant/PlantCard";
-import PlantFormModal from '../plant/PlantFormModal';
+import React, { useState } from 'react'; // 💡 useState 임포트
+import { usePlants } from '../hooks/usePlants'; // usePlants 훅 임포트
+import type { Plant } from '../types/Plant'; // Plant 타입 임포트
+import PlantCard from '../plant/PlantCard'; // 💡 PlantCard 컴포넌트 임포트
+import MoodModal from '../MoodModal'; // 💡 MoodModal 임포트
+import { getDDay } from '../utils/date'; // D-Day 계산 유틸 임포트
 
 const DashboardPage: React.FC = () => {
-    // usePlants 훅을 사용하여 전역 상태와 함수에 접근
-    const { plants, deletePlant } = usePlants();
-    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+    const { plants } = usePlants();
 
-    // 모달 열기/닫기 핸들러
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    // 모달 상태 및 선택된 식물 상태 추가
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
 
-    // 화면에 표시할 제목과 버튼
+    // 물 주기 버튼 클릭 핸들러 (모달 열기)
+    const handleWater = (plant: Plant) => {
+        setSelectedPlant(plant);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedPlant(null);
+    };
+
+    // 물 줄 시기가 된 식물 목록 (D-Day >= 0)
+    const thirstyPlants = plants.filter(p => getDDay(p.lastWateredDate, p.waterCycle) >= 0);
+
     return (
-        <div className="w-full flex-1">
-            <div className="container mx-auto p-6">
-                <header className="flex justify-between items-center mb-8">
-                    <h1 className="text-2xl font-bold text-green-800">식물 현황</h1>
-                    {/* 식물 등록 모달 오픈 버튼 */}
-                    <button
-                        className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 focus:outline-0 rounded transition duration-300"
-                        onClick={openModal}
-                        >
-                        + 식물 추가
-                    </button>
-                </header>
+        <div className="py-4">
+            <h1 className="text-3xl font-extrabold text-primary-800 mb-6">🏠 나의 정원 대시보드</h1>
 
-                {/* 식물 목록 렌더링 */}
-                {plants.length === 0 ? (
-                    <div className="text-center p-10 border-2 border-dashed border-gray-300 rounded-lg">
-                        <p className="text-xl text-gray-500">아직 등록된 식물이 없어요. 위 버튼을 눌러 첫 식물을 등록해 주세요!</p>
-                    </div>
-                ) : (
-                    // 식물 카드들을 표시할 그리드 레이아웃
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {/* PlantCard 컴포넌트를 사용하여 렌더링 */}
-                        {plants.map(plant => (
-                            <PlantCard
-                                key={plant.id}
-                                plant={plant}
-                                onDelete={deletePlant}
-                            />
-                        ))}
-                    </div>
-                )}
+            {/* 1. 긴급 알림 영역 */}
+            {thirstyPlants.length > 0 && (
+                <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-8 shadow-sm">
+                    <p className="font-bold mb-1">🚨 긴급 알림: 물 줄 시간이에요!</p>
+                    <p className="text-sm">
+                        {thirstyPlants.map(p => p.name).join(', ')}에게 물을 주세요.
+                    </p>
+                </div>
+            )}
 
-                {/* 모달 컴포넌트 렌더링 */}
-                <PlantFormModal
-                    isOpen={isModalOpen}
-                    onClose={closeModal}
-                />
-            </div>
+            {/* 2. 식물 목록 영역 */}
+            {plants.length === 0 ? (
+                <div className="text-center p-12 bg-white rounded-xl shadow-inner border border-stone-100">
+                    <p className="text-stone-500 mb-4">아직 정원에 식물이 없어요! '나의 정원'에서 식물을 등록해주세요.</p>
+                </div>
+            ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {/* PlantCard 렌더링 및 handleWater 연결 */}
+                    {plants.map(plant => (
+                        <PlantCard
+                            key={plant.id}
+                            plant={plant}
+                            onWater={handleWater}
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* MoodModal 렌더링 (모달 열기/닫기 로직) */}
+            <MoodModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                plant={selectedPlant}
+            />
         </div>
     );
 };

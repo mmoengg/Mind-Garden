@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { Droplet, AlertCircle } from 'lucide-react'; // 아이콘
 import type { Plant } from '../types/Plant';
 import { getDDay, formatDDay } from '../utils/date';
@@ -16,8 +17,19 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
     // 상태 판단 (0 이상이면 물 줄 때가 됨/지남)
     const isThirsty = dDay >= 0;
 
+    // 이벤트 버블링 차단
+    const handleWateringClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        // 💡 필수: 상위 요소(Link)로 이벤트가 전달되는 것을 막음
+        e.stopPropagation();
+        // Link 태그의 기본 동작(페이지 이동)도 막음 (필요 시)
+        e.preventDefault();
+
+        // 부모 컴포넌트(App.tsx)에서 넘겨준 모달 열기 함수 실행
+        onWater(plant);
+    };
+
     return (
-        <div className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-all hover:shadow-lg border border-stone-100">
+        <Link to={`/plant/${plant.id}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-all hover:shadow-lg border border-stone-100">
 
             {/* 📸 사진 영역 (비율 4:5 또는 1:1) */}
             <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-100">
@@ -61,7 +73,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
 
                 {/* 물 주기 버튼 */}
                 <button
-                    onClick={() => onWater(plant)}
+                    onClick={handleWateringClick}
                     className={clsx(
                         "flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition-colors",
                         isThirsty
@@ -86,7 +98,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
             {isThirsty && dDay > 2 && (
                 <div className="absolute inset-0 rounded-3xl border-2 border-red-400 pointer-events-none opacity-50" />
             )}
-        </div>
+        </Link>
     );
 };
 
