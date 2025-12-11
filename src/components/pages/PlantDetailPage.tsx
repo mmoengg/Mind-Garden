@@ -44,16 +44,16 @@ const PlantDetailPage: React.FC = () => {
             <div className="bg-surface p-6 rounded-3xl shadow-lg mb-8 border border-stone-100">
                 <div className="flex items-start gap-6">
                     {/* 대표 사진 영역 */}
-                    <div className="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-stone-100">
+                    <div className="w-full md:w-56 h-56 flex-shrink-0 rounded-xl overflow-hidden bg-stone-100 shadow-md"> {/* 크기 변경 */}
                         {plant.coverImage ? (
                             <img src={plant.coverImage} alt={plant.name} className="w-full h-full object-cover" />
                         ) : (
-                            <div className="flex items-center justify-center w-full h-full text-4xl text-stone-400">🌿</div>
+                            <div className="flex items-center justify-center w-full h-full text-5xl text-stone-400">🌿</div>
                         )}
                     </div>
 
                     {/* 기본 정보 */}
-                    <div>
+                    <div className="w-full">
                         <h1 className="text-4xl font-extrabold text-primary-800">{plant.name}</h1>
                         <p className="text-lg text-stone-500 mb-4">{plant.species}</p>
 
