@@ -36,7 +36,7 @@ export interface Plant {
 
     // 📷 대표 사진
     // 가장 최근에 찍은 사진이나, 사용자가 설정한 '인생샷'
-    coverImage?: string;
+    coverImage?: string | null;
 
     // 💧 물 주기 주기 (일 단위)
     waterCycle: number;

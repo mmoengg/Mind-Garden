@@ -17,7 +17,6 @@ const moodMap: Record<Mood, { icon: LucideIcon; color: string; bgColor: string }
 };
 
 const TimelineLog: React.FC<TimelineLogProps> = ({ log }) => {
-
     // 로그 타입별 아이콘 설정 (재사용성을 위해 useMemo 사용)
     const logDetails = useMemo(() => {
         switch (log.type) {

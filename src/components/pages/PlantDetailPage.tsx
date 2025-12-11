@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Droplet, Calendar, Hash, ArrowLeft } from 'lucide-react';
 import { usePlants } from '../hooks/usePlants';
 import { formatDDay, getDDay } from '../utils/date';
-import TimelineLog from '../pages/TimelineLog';
+import TimelineLog from '../plant/TimelineLog';
 
 const PlantDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // URL에서 ID 가져오기
