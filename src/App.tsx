@@ -1,33 +1,13 @@
-import React, {useState} from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/layout/Sidebar';
-import Header from './components/layout/Header';
-import Footer from "./components/layout/Footer.tsx";
-import DashboardPage from './components/pages/DashboardPage';
-// TODO: 향후 PlantDetailPage를 만들면 여기에 추가
-
-const App: React.FC = () => {
-    // Sidebar 열림/닫힘 상태 관리
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-    const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
-    const closeSidebar = () => setIsSidebarOpen(false);
-
+// src/App.tsx
+function App() {
     return (
-        // 브라우저 라우터로 전체 앱 감싸기
-        <BrowserRouter>
-            <Header onMenuToggle={toggleSidebar} />
-            <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-            <div className="flex-1">
-                <Routes>
-                    {/* 메인 경로('/')에 DashboardPage 연결*/}
-                    <Route path="/" element={<DashboardPage />} />
-                    {/* <Route path="/plant/:id" element={<PlantDetailPage />} /> */}
-                </Routes>
-            </div>
-            <Footer />
-        </BrowserRouter>
+        <div className="flex flex-col gap-2 min-h-screen items-center justify-center">
+            <h1 className="text-3xl font-bold text-primary-600">
+                🌱 Mind Garden
+            </h1>
+            <p className="ml-2 text-stone-500">마음 정원에 오신 것을 환영합니다.</p>
+        </div>
     );
-};
+}
 
 export default App;
