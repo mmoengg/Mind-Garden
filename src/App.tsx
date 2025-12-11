@@ -1,5 +1,7 @@
+import { useState } from "react";
 import PlantCard from './components/plant/PlantCard';
-import type { Plant } from './components/types/plant';
+import type { Plant } from './components/types/Plant';
+import MoodModal from './components/MoodModal'
 
 function App() {
     // 임시 더미 데이터 (테스트용)
@@ -26,8 +28,19 @@ function App() {
         }
     ];
 
+    // 모달 관련 상태 추가
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
+
+    // 물 주기 버튼 클릭 핸들러 (모달 열기)
     const handleWater = (plant: Plant) => {
-        alert(`${plant.name}에게 물을 줍니다! (여기에 감정 모달이 뜰 예정)`);
+        setSelectedPlant(plant);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedPlant(null); // 모달 닫을 때 선택된 식물 초기화
     };
 
     return (
@@ -44,6 +57,13 @@ function App() {
                         <PlantCard key={plant.id} plant={plant} onWater={handleWater} />
                     ))}
                 </div>
+
+                {/* ⭐ 모달 렌더링 */}
+                <MoodModal
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    plant={selectedPlant}
+                />
             </div>
         </div>
     );

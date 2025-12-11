@@ -48,7 +48,14 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
             {/* 📝 정보 및 액션 영역 */}
             <div className="flex flex-col p-5">
                 <div className="mb-4">
-                    <h3 className="text-xl font-bold text-stone-800">{plant.name}</h3>
+                    <h3 className="flex items-center gap-0.5 text-xl font-bold text-stone-800">
+                        {plant.name}
+                        {isThirsty && (
+                            <span className="ml-1 text-red-500">
+                                <AlertCircle size={16} />
+                            </span>
+                        )}
+                    </h3>
                     <p className="text-sm text-stone-500">{plant.species}</p>
                 </div>
 
