@@ -4,6 +4,7 @@ import DashboardPage from './components/pages/DashboardPage';
 import MyPlantsPage from './components/pages/MyPlantsPage';
 import MoodLogPage from './components/pages/MoodLogPage';
 import AddPlantPage from './components/pages/AddPlantPage';
+import PlantDetailPage from "./components/pages/PlantDetailPage.tsx";
 
 function App() {
     return (
@@ -17,6 +18,8 @@ function App() {
 
                     {/* 등록/설정 등 액션 경로 */}
                     <Route path="/add-plant" element={<AddPlantPage />} />
+                    {/* 식물 상세 페이지 경로 */}
+                    <Route path="/plant/:id" element={<PlantDetailPage />} />
 
                     {/* 404 페이지는 생략 */}
                 </Routes>

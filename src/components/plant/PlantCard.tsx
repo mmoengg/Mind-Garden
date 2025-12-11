@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { Droplet, AlertCircle } from 'lucide-react'; // 아이콘
 import type { Plant } from '../types/Plant';
 import { getDDay, formatDDay } from '../utils/date';
@@ -17,7 +18,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
     const isThirsty = dDay >= 0;
 
     return (
-        <div className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-all hover:shadow-lg border border-stone-100">
+        <Link to={`/plant/${plant.id}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-all hover:shadow-lg border border-stone-100">
 
             {/* 📸 사진 영역 (비율 4:5 또는 1:1) */}
             <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-100">
@@ -86,7 +87,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
             {isThirsty && dDay > 2 && (
                 <div className="absolute inset-0 rounded-3xl border-2 border-red-400 pointer-events-none opacity-50" />
             )}
-        </div>
+        </Link>
     );
 };
 

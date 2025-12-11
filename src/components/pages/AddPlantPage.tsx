@@ -48,7 +48,7 @@ const AddPlantPage: React.FC = () => {
 
         addPlant(newPlant);
         alert(`${name}의 정원 생활을 시작합니다!`);
-        navigate('/'); // 등록 후 대시보드로 이동
+        navigate('/my-plants'); // 등록 후 대시보드로 이동
     };
 
     // 폼 입력 필드 컴포넌트 (반복되는 디자인 간소화)
