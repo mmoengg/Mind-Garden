@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import type { ReactNode } from 'react';
-import { PlantContext } from './plantContext';
-import type { Plant, CareLog, Mood } from '../types/Plant';
+import React, { useMemo, type ReactNode } from 'react';
+import { useAuth } from './AuthContext';
+import type { Plant, Mood, CareLog } from '../types/Plant';
+import { PlantContext, type PlantContextType } from './plantContext';
+import useLocalStorage from '../hooks/useLocalStorage';
 
-// Context에서 제공할 값의 타입 정의 (여기에 유지)
-export interface PlantContextType {
-    plants: Plant[];
-    addPlant: (newPlant: Plant) => void;
-    deletePlant: (id: string) => void;
-    recordWatering: (id: string, mood: Mood, content?: string) => void;
-}
-
-// Provider 컴포넌트 생성
 interface PlantProviderProps {
     children: ReactNode;
 }
 
 export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
-    const [plants, setPlants] = useState<Plant[]>([]);
+    // 인증 정보 접근
+    const { uid, isLoading: authLoading } = useAuth(); // 인증 로딩 상태도 가져옵니다.
 
-    // --- 구현할 핵심 로직 ---
+    // UID 기반의 스토리지 키 생성 (Fallback 처리)
+    const storageKey = uid ? `mindGardenPlants-${uid}` : 'mindGardenPlants-anon-fallback';
+
+    // UID 기반 키를 useLocalStorage에 전달
+    // useAuth가 로딩 중이어도 최상위에서 훅을 호출해야 하므로, key에 UID를 포함시킵니다.
+    const [plants, setPlants] = useLocalStorage<Plant[]>(storageKey, []);
+
+    // 데이터 변경 함수 정의 (CRUD)
     const addPlant = (newPlant: Plant) => {
         setPlants(prev => [...prev, newPlant]);
     };
@@ -31,9 +31,8 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
     const recordWatering = (plantId: string, mood: Mood, content?: string) => {
         const today = new Date().toISOString().slice(0, 10);
 
-        // 새로운 CareLog 객체 생성
         const newLog: CareLog = {
-            id: Date.now().toString(), // 임시 ID
+            id: Date.now().toString(),
             date: today,
             type: 'water',
             mood: mood,
@@ -45,16 +44,22 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
                 plant.id === plantId
                     ? {
                         ...plant,
-                        lastWateredDate: today, // 마지막 물 준 날짜 업데이트
-                        logs: [...plant.logs, newLog] // 새로운 로그 추가
+                        lastWateredDate: today,
+                        logs: [...plant.logs, newLog]
                     }
                     : plant
             )
         );
     };
-    // -------------------------
 
-    const value: PlantContextType = { plants, addPlant, deletePlant, recordWatering };
+    // Context에 전달할 최종 value 정의
+    const value: PlantContextType = useMemo(() => ({
+        plants,
+        addPlant,
+        deletePlant,
+        recordWatering,
+        isLoading: authLoading,
+    }), [plants, authLoading]);
 
     // Context Provider에 value 전달
     return (

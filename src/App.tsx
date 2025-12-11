@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './components/context/AuthContext';
+import { PlantProvider } from "./components/context/PlantProvider";
 import AppLayout from './components/layout/AppLayout';
 import DashboardPage from './components/pages/DashboardPage';
 import MyPlantsPage from './components/pages/MyPlantsPage';
@@ -8,23 +10,27 @@ import PlantDetailPage from "./components/pages/PlantDetailPage.tsx";
 
 function App() {
     return (
-        <Router>
-            <AppLayout>
-                <Routes>
-                    {/* 주요 내비게이션 경로 */}
-                    <Route path="/" element={<DashboardPage />} />
-                    <Route path="/my-plants" element={<MyPlantsPage />} />
-                    <Route path="/mood-log" element={<MoodLogPage />} />
+        <AuthProvider>
+            <PlantProvider>
+                <Router>
+                    <AppLayout>
+                        <Routes>
+                            {/* 주요 내비게이션 경로 */}
+                            <Route path="/" element={<DashboardPage />} />
+                            <Route path="/my-plants" element={<MyPlantsPage />} />
+                            <Route path="/mood-log" element={<MoodLogPage />} />
 
-                    {/* 등록/설정 등 액션 경로 */}
-                    <Route path="/add-plant" element={<AddPlantPage />} />
-                    {/* 식물 상세 페이지 경로 */}
-                    <Route path="/plant/:id" element={<PlantDetailPage />} />
+                            {/* 등록/설정 등 액션 경로 */}
+                            <Route path="/add-plant" element={<AddPlantPage />} />
+                            {/* 식물 상세 페이지 경로 */}
+                            <Route path="/plant/:id" element={<PlantDetailPage />} />
 
-                    {/* 404 페이지는 생략 */}
-                </Routes>
-            </AppLayout>
-        </Router>
+                            {/* 404 페이지는 생략 */}
+                        </Routes>
+                    </AppLayout>
+                </Router>
+            </PlantProvider>
+        </AuthProvider>
     );
 }
 

@@ -1,11 +1,12 @@
-// Custom Hook 생성 (Context 사용 용이)
 import { useContext } from "react";
-import { PlantContext } from '../context/plantContext';
+import { PlantContext, type PlantContextType } from '../context/plantContext';
 
-export const usePlants = () => {
+export const usePlants = (): PlantContextType => {
     const context = useContext(PlantContext);
-    if (!context) {
+
+    if (context === undefined) {
         throw new Error('usePlants must be used within a PlantProvider');
     }
+
     return context;
 };
