@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {Leaf, Plus} from 'lucide-react';
+import {Leaf} from 'lucide-react';
 import { navItems } from '../../data/nav';
 import clsx from 'clsx';
 
@@ -57,11 +57,6 @@ const Navbar: React.FC = () => {
                     ))}
                 </nav>
             </footer>
-
-            {/* Mobile: 식물 등록 FAB (Float Action Button) */}
-            <Link to="/add-plant" className="fixed right-6 bottom-20 lg:bottom-6 lg:right-10 w-14 h-14 rounded-full bg-primary-600 text-white flex items-center justify-center shadow-lg hover:bg-primary-700 transition-colors z-50">
-                <Plus size={28} />
-            </Link>
         </>
     );
 };

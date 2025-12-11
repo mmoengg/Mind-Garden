@@ -94,7 +94,7 @@ const AddPlantPage: React.FC = () => {
 
 
     return (
-        <div className="max-w-xl py-8">
+        <div className="max-w-xl">
             <h1 className="text-3xl font-extrabold text-primary-800 mb-2">➕ 새로운 정원 친구 등록</h1>
             <p className="text-stone-500 mb-8">나의 반려 식물 정보를 기록하고, 마음 정원을 시작해보세요.</p>
 
