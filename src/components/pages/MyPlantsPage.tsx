@@ -1,24 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react'; // 💡 useState 임포트
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { usePlants } from '../hooks/usePlants';
 import PlantCard from '../plant/PlantCard';
+import MoodModal from '../MoodModal'; // 💡 MoodModal 임포트
+import type { Plant } from '../types/Plant'; // Plant 타입 임포트
 
 const MyPlantsPage: React.FC = () => {
-    const { plants } = usePlants(); // 식물 목록을 가져옵니다.
+    const { plants } = usePlants();
 
-    const handleWater = (plant: any) => {
-        // 여기에 물 주기 모달을 여는 로직이 들어갈 예정입니다. (현재는 alert)
-        alert(`[${plant.name}] 물 주기 준비!`);
+    // ⭐ 모달 상태 및 선택된 식물 상태 추가
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
+
+    // ⭐ 물 주기 버튼 클릭 핸들러 (모달 열기 로직으로 대체)
+    const handleWater = (plant: Plant) => {
+        setSelectedPlant(plant);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedPlant(null);
     };
 
     return (
-        <div>
+        <div className="py-4">
             {/* 상단 헤더 및 등록 버튼 */}
             <header className="flex justify-between items-center mb-6">
                 <h2 className="text-3xl font-bold">🌱 나의 정원</h2>
 
-                {/* 💡 새 식물 등록 버튼 추가 */}
+                {/* 새 식물 등록 버튼 유지 */}
                 <Link
                     to="/add-plant"
                     className="flex items-center gap-2 bg-primary-600 text-white font-bold py-2 px-4 rounded-xl hover:bg-primary-700 transition-colors shadow-md shadow-primary-200 text-sm"
@@ -32,6 +44,7 @@ const MyPlantsPage: React.FC = () => {
 
             {/* 식물 목록 표시 */}
             {plants.length === 0 ? (
+                // ... (식물이 없을 때 UI 유지) ...
                 <div className="text-center p-12 bg-white rounded-xl shadow-inner border border-stone-100">
                     <p className="text-stone-500 mb-4">아직 정원에 식물이 없어요!</p>
                     <Link
@@ -43,14 +56,23 @@ const MyPlantsPage: React.FC = () => {
                 </div>
             ) : (
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {/* PlantCard에서는 D-Day 확인 및 상세 보기만 활성화하는 것이 좋습니다.
-                       물 주기는 DashboardPage에서 처리하도록 분리할 예정입니다.
-                       여기서는 임시로 PlantCard를 사용합니다. */}
+                    {/* PlantCard 렌더링 */}
                     {plants.map(plant => (
-                        <PlantCard key={plant.id} plant={plant} onWater={handleWater} />
+                        <PlantCard
+                            key={plant.id}
+                            plant={plant}
+                            onWater={handleWater}
+                        />
                     ))}
                 </div>
             )}
+
+            {/* ⭐ MoodModal 렌더링 추가 */}
+            <MoodModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                plant={selectedPlant}
+            />
         </div>
     );
 };
