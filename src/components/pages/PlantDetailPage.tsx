@@ -40,7 +40,7 @@ const PlantDetailPage: React.FC = () => {
                 {/* 추후 여기에 수정/삭제 버튼 추가 */}
             </div>
 
-            {/* 1. 식물 정보 개요 */}
+            {/* 식물 정보 개요 */}
             <div className="bg-surface p-6 rounded-3xl shadow-lg mb-8 border border-stone-100">
                 <div className="flex items-start gap-6">
                     {/* 대표 사진 영역 */}
@@ -71,7 +71,7 @@ const PlantDetailPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* 2. 성장 타임라인 / 기록 영역 (핵심) */}
+            {/* 성장 타임라인 / 기록 영역 (핵심) */}
             <h2 className="text-2xl font-bold text-primary-700 mb-6 border-b pb-2">🌱 성장 타임라인</h2>
 
             <div className="space-y-8">

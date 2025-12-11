@@ -100,7 +100,7 @@ const AddPlantPage: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded-3xl shadow-xl border border-stone-100">
 
-                {/* 1. 기본 정보 */}
+                {/* 기본 정보 */}
                 <InputField
                     label="별명 (필수)"
                     id="name"
@@ -119,7 +119,7 @@ const AddPlantPage: React.FC = () => {
                     placeholder="예: 몬스테라, 스투키, 산세베리아"
                 />
 
-                {/* 2. 관리 정보 */}
+                {/* 관리 정보 */}
                 <InputField
                     label="물 주기 주기 (일 단위, 필수)"
                     id="waterCycle"
@@ -139,7 +139,7 @@ const AddPlantPage: React.FC = () => {
                     icon={Calendar}
                 />
 
-                {/* 3. 사진 및 메모 */}
+                {/* 사진 및 메모 */}
                 <InputField
                     label="대표 사진 URL (선택)"
                     id="coverImage"

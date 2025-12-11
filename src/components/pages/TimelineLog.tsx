@@ -46,14 +46,14 @@ const TimelineLog: React.FC<TimelineLogProps> = ({ log }) => {
                     )}
                 </div>
 
-                {/* 1. 사진 기록 */}
+                {/* 사진 기록 */}
                 {log.photoUrl && (
                     <div className="w-full h-32 rounded-lg overflow-hidden mb-3 bg-stone-100">
                         <img src={log.photoUrl} alt="기록 사진" className="w-full h-full object-cover" />
                     </div>
                 )}
 
-                {/* 2. 메모 내용 */}
+                {/* 메모 내용 */}
                 {log.content && (
                     <p className="text-stone-700 whitespace-pre-wrap">{log.content}</p>
                 )}
