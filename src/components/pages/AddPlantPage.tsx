@@ -29,12 +29,12 @@ const AddPlantPage: React.FC = () => {
 
         // 새 식물 객체 생성
         const newPlant: Plant = {
-            id: Date.now().toString(), // 임시 고유 ID
+            id: Date.now().toString(),
             name,
             species,
             adoptedDate,
             waterCycle,
-            coverImage: coverImage.trim() || undefined, // 비어있으면 undefined
+            coverImage: coverImage.trim() || null,
             lastWateredDate: adoptedDate, // 처음 등록 시 입양일을 마지막 물 준 날로 설정
             logs: [
                 {

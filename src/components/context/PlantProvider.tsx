@@ -1,34 +1,98 @@
-import React, { useMemo, type ReactNode } from 'react';
+import React, { useMemo, useEffect, useState, type ReactNode } from 'react';
+import {
+    // getFirestore,
+    collection,
+    doc,
+    setDoc,
+    deleteDoc,
+    updateDoc,
+    onSnapshot,
+    query,
+    arrayUnion
+} from 'firebase/firestore';
+import { db } from '../../firebase';
 import { useAuth } from './AuthContext';
 import type { Plant, Mood, CareLog } from '../types/Plant';
 import { PlantContext, type PlantContextType } from './plantContext';
-import useLocalStorage from '../hooks/useLocalStorage';
 
 interface PlantProviderProps {
     children: ReactNode;
 }
 
 export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
-    // 인증 정보 접근
-    const { uid, isLoading: authLoading } = useAuth(); // 인증 로딩 상태도 가져옵니다.
+    // 인증 정보 접근 (인증 로딩 상태도 가져옴)
+    const { uid, isLoading: authLoading } = useAuth();
 
-    // UID 기반의 스토리지 키 생성 (Fallback 처리)
-    const storageKey = uid ? `mindGardenPlants-${uid}` : 'mindGardenPlants-anon-fallback';
+    const [plants, setPlants] = useState<Plant[]>([]);
+    const [isDataLoading, setIsDataLoading] = useState(true);
 
-    // UID 기반 키를 useLocalStorage에 전달
-    // useAuth가 로딩 중이어도 최상위에서 훅을 호출해야 하므로, key에 UID를 포함시킵니다.
-    const [plants, setPlants] = useLocalStorage<Plant[]>(storageKey, []);
+    useEffect(() => {
+        // 인증이 안되었거나 UID가 없으면 중단
+        if (authLoading || !uid) {
+            setPlants([]);
+            return;
+        }
+
+        setIsDataLoading(true);
+
+        // 📂 데이터 구조: users -> [UID] -> plants -> [식물ID]
+        // 해당 사용자의 'plants' 컬렉션을 구독합니다.
+        const q = query(collection(db, "users", uid, "plants"));
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const fetchedPlants: Plant[] = [];
+            snapshot.forEach((doc) => {
+                fetchedPlants.push(doc.data() as Plant);
+            });
+
+            // 데이터 정렬 (예: 등록순, 필요 시 sort 추가)
+            // fetchedPlants.sort((a, b) => Number(a.id) - Number(b.id));
+
+            setPlants(fetchedPlants);
+            setIsDataLoading(false);
+            console.log("🔥 Firestore 데이터 동기화 완료:", fetchedPlants.length, "개");
+        }, (error) => {
+            console.error("Firestore 구독 에러:", error);
+            setIsDataLoading(false);
+        });
+
+        // 컴포넌트가 꺼질 때 구독 해제 (메모리 누수 방지)
+        return () => unsubscribe();
+
+    }, [uid, authLoading]);
 
     // 데이터 변경 함수 정의 (CRUD)
-    const addPlant = (newPlant: Plant) => {
-        setPlants(prev => [...prev, newPlant]);
+    const addPlant = async (newPlant: Plant): Promise<boolean> => {
+        if (!uid) {
+            console.error("❌ 로그인이 되어있지 않아 저장할 수 없습니다.");
+            return false;
+        }
+
+        try {
+            const plantRef = doc(db, "users", uid, "plants", newPlant.id);
+            await setDoc(plantRef, newPlant);
+            console.log("✅ 식물 등록 성공:", newPlant.name);
+            return true; // 성공 시 true 반환
+        } catch (error) {
+            console.error("❌ 식물 등록 실패 원인:", error);
+            // 여기서 alert를 띄우지 않고, false만 반환하여 페이지에서 처리하도록 함
+            return false;
+        }
     };
 
-    const deletePlant = (id: string) => {
-        setPlants(prev => prev.filter(plant => plant.id !== id));
+    const deleteDocPlant = async (id: string) => {
+        if (!uid) return;
+        try {
+            const plantRef = doc(db, "users", uid, "plants", id);
+            await deleteDoc(plantRef);
+            console.log("🗑 식물 삭제 성공");
+        } catch (error) {
+            console.error("삭제 실패:", error);
+        }
     };
 
-    const recordWatering = (plantId: string, mood: Mood, content?: string) => {
+    const recordWatering = async (plantId: string, mood: Mood, content?: string) => {
+        if (!uid) return;
         const today = new Date().toISOString().slice(0, 10);
 
         const newLog: CareLog = {
@@ -39,27 +103,29 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
             content: content,
         };
 
-        setPlants(prevPlants =>
-            prevPlants.map(plant =>
-                plant.id === plantId
-                    ? {
-                        ...plant,
-                        lastWateredDate: today,
-                        logs: [...plant.logs, newLog]
-                    }
-                    : plant
-            )
-        );
+        try {
+            const plantRef = doc(db, "users", uid, "plants", plantId);
+
+            // updateDoc을 사용하여 특정 필드만 업데이트
+            // arrayUnion: 배열에 요소를 추가하는 Firestore 전용 함수
+            await updateDoc(plantRef, {
+                lastWateredDate: today,
+                logs: arrayUnion(newLog)
+            });
+            console.log("💧 물 주기 기록 성공");
+        } catch (error) {
+            console.error("물 주기 기록 실패:", error);
+        }
     };
 
     // Context에 전달할 최종 value 정의
     const value: PlantContextType = useMemo(() => ({
         plants,
         addPlant,
-        deletePlant,
+        deletePlant: deleteDocPlant, // 이름 매핑
         recordWatering,
-        isLoading: authLoading,
-    }), [plants, authLoading]);
+        isLoading: authLoading || isDataLoading, // 인증 로딩 + 데이터 로딩
+    }), [plants, authLoading, isDataLoading, uid]); // uid 의존성 추가
 
     // Context Provider에 value 전달
     return (
