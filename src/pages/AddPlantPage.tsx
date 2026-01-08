@@ -214,7 +214,7 @@ const AddPlantPage: React.FC = () => {
                     value={waterCycle}
                     onChange={(e) => setWaterCycle(parseInt(e.target.value) || 0)}
                     type="number"
-                    icon={Droplet} // Droplet 아이콘은 lucide-react에서 가져와야 함
+                    icon={Droplet}
                     min={1}
                 />
 
