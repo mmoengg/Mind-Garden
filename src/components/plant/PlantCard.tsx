@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { Droplet, AlertCircle } from 'lucide-react'; // 아이콘
-import type { Plant } from '../types/Plant';
-import { getDDay, formatDDay } from '../utils/date';
+import type { Plant } from '../../types/Plant';
+import { getDDay, formatDDay } from '../../utils/date';
 import clsx from 'clsx'; // 조건부 클래스 유틸
 
 interface PlantCardProps {

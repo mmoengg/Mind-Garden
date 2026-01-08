@@ -1,4 +1,4 @@
-import { usePlants } from './usePlants';
+import { usePlants } from './usePlants.ts';
 import type { Mood } from '../types/Plant';
 
 // 감정 빈도 결과를 담을 타입

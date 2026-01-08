@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMoodAnalysis } from '../hooks/useMoodAnalysis';
+import { useMoodAnalysis } from '../hooks/useMoodAnalysis.ts';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Cloud } from 'lucide-react';
 

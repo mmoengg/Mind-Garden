@@ -1,9 +1,9 @@
 import React, { useState } from 'react'; // 💡 useState 임포트
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
-import { usePlants } from '../hooks/usePlants';
-import PlantCard from '../plant/PlantCard';
-import MoodModal from '../MoodModal'; // 💡 MoodModal 임포트
+import { usePlants } from '../hooks/usePlants.ts';
+import PlantCard from '../components/plant/PlantCard.tsx';
+import MoodModal from '../components/MoodModal.tsx'; // 💡 MoodModal 임포트
 import type { Plant } from '../types/Plant'; // Plant 타입 임포트
 
 const MyPlantsPage: React.FC = () => {

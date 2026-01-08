@@ -2,15 +2,15 @@
 
 import React from 'react'; // useEffect 삭제 (불필요)
 import { useParams, useNavigate } from 'react-router-dom';
-import { Droplet, Calendar, Hash, ArrowLeft, Trash2 } from 'lucide-react';
-import { usePlants } from '../hooks/usePlants';
-import { formatDDay, getDDay } from '../utils/date';
-import TimelineLog from '../../components/plant/TimelineLog.tsx';
+import {Droplet, Calendar, Hash, ArrowLeft, Trash2, Edit} from 'lucide-react';
+import { usePlants } from '../hooks/usePlants.ts';
+import { formatDDay, getDDay } from '../utils/date.ts';
+import TimelineLog from '../components/plant/TimelineLog.tsx';
 
 const PlantDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { plants, deletePlant } = usePlants();
+    const { plants, deletePlant, waterPlant } = usePlants();
 
     // ID에 맞는 식물 찾기 (Context가 업데이트되면 자동으로 다시 계산됨)
     const plant = plants.find(p => p.id === id);
@@ -31,6 +31,16 @@ const PlantDetailPage: React.FC = () => {
     const dDay = getDDay(plant.lastWateredDate, plant.waterCycle);
     const dDayStatus = formatDDay(dDay);
     const isThirsty = dDay >= 0;
+
+
+    // 물 주기 핸들러
+    const handleWater = async () => {
+        if (!plant) return;
+        if (window.confirm("식물에게 물을 주시겠어요? 💧")) {
+            await waterPlant(plant.id);
+            // alert("식물이 기뻐합니다! 🌱"); // 선택 사항
+        }
+    };
 
     // 삭제 핸들러
     const handleDelete = async () => {
@@ -57,15 +67,26 @@ const PlantDetailPage: React.FC = () => {
                     <span className="font-semibold">돌아가기</span>
                 </button>
 
-                {/* 삭제 버튼 */}
-                <button
-                    onClick={handleDelete}
-                    className="flex items-center gap-1 text-stone-400 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors"
-                    title="식물 삭제하기"
-                >
-                    <Trash2 size={18} />
-                    <span className="text-sm font-medium">삭제</span>
-                </button>
+                <div className="flex items-center gap-2">
+                    {/* 수정 버튼 */}
+                    <button
+                        className="flex items-center gap-1 text-stone-400 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors"
+                        title="식물 수정하기"
+                        onClick={() => navigate(`/plant/${id}/edit`)}>
+                        <Edit size={18} />
+                        <span className="text-sm font-medium">수정</span>
+                    </button>
+
+                    {/* 삭제 버튼 */}
+                    <button
+                        onClick={handleDelete}
+                        className="flex items-center gap-1 text-stone-400 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors"
+                        title="식물 삭제하기"
+                    >
+                        <Trash2 size={18} />
+                        <span className="text-sm font-medium">삭제</span>
+                    </button>
+                </div>
             </div>
 
             {/* 식물 정보 개요 */}
@@ -81,11 +102,21 @@ const PlantDetailPage: React.FC = () => {
                     </div>
 
                     {/* 기본 정보 */}
-                    <div className="w-full text-center md:text-left">
+                    <div className="relative w-full text-center md:text-left">
                         <h1 className="text-3xl md:text-4xl font-extrabold text-stone-800 mb-2">{plant.name}</h1>
                         <p className="text-lg text-primary-600 font-medium mb-6 bg-primary-50 inline-block px-3 py-1 rounded-lg">
                             {plant.species}
                         </p>
+
+                        {/* 물주기 버튼 */}
+                        <button
+                            onClick={handleWater}
+                            className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-blue-500 hover:bg-blue-50 hover:text-blue-600 px-4 py-2 flex items-center gap-2 rounded-full shadow-sm transition-all font-bold text-sm border border-blue-100 z-10"
+                            title="물 주기"
+                        >
+                            <Droplet size={18} className={isThirsty ? "animate-bounce" : ""} />
+                            <span>물 주기</span>
+                        </button>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm bg-stone-50 p-4 rounded-xl">
                             <span className="flex items-center text-stone-600">

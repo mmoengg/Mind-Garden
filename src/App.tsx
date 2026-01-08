@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './components/context/AuthContext';
-import { PlantProvider } from "./components/context/PlantProvider";
+import { AuthProvider } from './context/AuthContext';
+import { PlantProvider } from "./context/PlantProvider";
 import AppLayout from './components/layout/AppLayout';
-import DashboardPage from './components/pages/DashboardPage';
-import MyPlantsPage from './components/pages/MyPlantsPage';
-import MoodLogPage from './components/pages/MoodLogPage';
-import AddPlantPage from './components/pages/AddPlantPage';
-import PlantDetailPage from "./components/pages/PlantDetailPage.tsx";
+import DashboardPage from './pages/DashboardPage';
+import MyPlantsPage from './pages/MyPlantsPage';
+import EditPlantPage from './pages/EditPlantPage';
+import MoodLogPage from './pages/MoodLogPage';
+import AddPlantPage from './pages/AddPlantPage';
+import PlantDetailPage from "./pages/PlantDetailPage.tsx";
 
 function App() {
     return (
@@ -24,6 +25,8 @@ function App() {
                             <Route path="/add-plant" element={<AddPlantPage />} />
                             {/* 식물 상세 페이지 경로 */}
                             <Route path="/plant/:id" element={<PlantDetailPage />} />
+                            {/* 식물 수정*/}
+                            <Route path="/plant/:id/edit" element={<EditPlantPage />} />
 
                             {/* 404 페이지는 생략 */}
                         </Routes>

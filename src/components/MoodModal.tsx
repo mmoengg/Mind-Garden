@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Smile, Frown, Zap, Cloud, Heart } from 'lucide-react';
-import { usePlants } from './hooks/usePlants';
-import type { Plant, Mood } from './types/Plant';
+import { usePlants } from '../hooks/usePlants';
+import type { Plant, Mood } from '../types/Plant';
 import clsx from 'clsx';
 
 interface MoodModalProps {

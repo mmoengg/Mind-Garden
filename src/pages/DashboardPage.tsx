@@ -1,9 +1,9 @@
 import React, { useState } from 'react'; // 💡 useState 임포트
-import { usePlants } from '../hooks/usePlants'; // usePlants 훅 임포트
+import { usePlants } from '../hooks/usePlants.ts'; // usePlants 훅 임포트
 import type { Plant } from '../types/Plant'; // Plant 타입 임포트
-import PlantCard from '../plant/PlantCard'; // 💡 PlantCard 컴포넌트 임포트
-import MoodModal from '../MoodModal'; // 💡 MoodModal 임포트
-import { getDDay } from '../utils/date'; // D-Day 계산 유틸 임포트
+import PlantCard from '../components/plant/PlantCard.tsx'; // 💡 PlantCard 컴포넌트 임포트
+import MoodModal from '../components/MoodModal.tsx'; // 💡 MoodModal 임포트
+import { getDDay } from '../utils/date.ts'; // D-Day 계산 유틸 임포트
 
 const DashboardPage: React.FC = () => {
     const { plants } = usePlants();

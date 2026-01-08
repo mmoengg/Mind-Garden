@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import type { CareLog, Mood } from '../types/Plant';
+import type { CareLog, Mood } from '../../types/Plant';
 import {Droplet, PenTool, Zap, Smile, Cloud, Heart, Frown, type LucideIcon, Leaf} from 'lucide-react';
 import clsx from 'clsx';
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePlants } from '../hooks/usePlants';
-import { useAuth } from '../context/AuthContext';
+import { usePlants } from '../hooks/usePlants.ts';
+import { useAuth } from '../context/AuthContext.tsx';
 import type { Plant } from '../types/Plant';
 import {Camera, Calendar, Hash, Leaf, Droplet, Upload, Loader2, type LucideIcon} from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../firebase';
+import { storage } from '../firebase.ts';
 
 // 폼 입력 필드 컴포넌트 (반복되는 디자인 간소화)
 const InputField: React.FC<{

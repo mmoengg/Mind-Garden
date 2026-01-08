@@ -10,10 +10,10 @@ import {
     query,
     arrayUnion
 } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { useAuth } from './AuthContext';
+import { db } from '../firebase.ts';
+import { useAuth } from './AuthContext.tsx';
 import type { Plant, Mood, CareLog } from '../types/Plant';
-import { PlantContext, type PlantContextType } from './plantContext';
+import { PlantContext, type PlantContextType } from './plantContext.ts';
 
 interface PlantProviderProps {
     children: ReactNode;
@@ -106,6 +106,47 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
         }
     };
 
+    // 물 주기
+    const waterPlant = async (plantId: string) => {
+        if (!uid) return;
+
+        try {
+            const plantRef = doc(db, "users", uid, "plants", plantId);
+            const today = new Date().toISOString().slice(0, 10); // "2024-05-20" 형식
+
+            // Firestore 업데이트 (날짜 갱신 + 로그 추가)
+            await updateDoc(plantRef, {
+                lastWateredDate: today,
+                logs: arrayUnion({
+                    id: Date.now().toString(), // 유니크한 ID
+                    date: today,
+                    type: 'water', // 타입: 물 주기
+                    content: '시원하게 물을 주었어요! 💧'
+                })
+            });
+
+            console.log("💧 물 주기 완료!");
+        } catch (error) {
+            console.error("물 주기 실패:", error);
+            alert("오류가 발생했습니다.");
+        }
+    };
+
+    // 수정
+    const updatePlant = async (updatedPlant: Plant) => {
+        if (!uid) return;
+
+        try {
+            const plantRef = doc(db, "users", uid, "plants", updatedPlant.id);
+            // 전체 필드 업데이트
+            await updateDoc(plantRef, { ...updatedPlant });
+            console.log("식물 정보 수정 완료!");
+        } catch (error) {
+            console.error("수정 실패:", error);
+            alert("정보 수정 중 오류가 발생했습니다.");
+        }
+    };
+
     const recordWatering = async (plantId: string, mood: Mood, content?: string) => {
         if (!uid) return;
         const today = new Date().toISOString().slice(0, 10);
@@ -137,7 +178,9 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
     const value: PlantContextType = useMemo(() => ({
         plants,
         addPlant,
-        deletePlant: deleteDocPlant, // 이름 매핑
+        deletePlant: deleteDocPlant, // 이름 매핑,
+        waterPlant,
+        updatePlant,
         recordWatering,
         isLoading: authLoading || isDataLoading, // 인증 로딩 + 데이터 로딩
     }), [plants, authLoading, isDataLoading, uid]); // uid 의존성 추가
