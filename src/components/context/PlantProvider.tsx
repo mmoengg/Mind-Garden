@@ -81,13 +81,28 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
     };
 
     const deleteDocPlant = async (id: string) => {
-        if (!uid) return;
+        // 로그인 체크
+        if (!uid) {
+            alert("로그인이 필요한 기능입니다.");
+            return;
+        }
+
+        // 삭제 확인 (실수 방지)
+        if (!window.confirm("정말로 삭제하시겠습니까? \n삭제된 식물은 복구할 수 없습니다.")) {
+            return;
+        }
+
         try {
-            const plantRef = doc(db, "users", uid, "plants", id);
-            await deleteDoc(plantRef);
-            console.log("🗑 식물 삭제 성공");
+            // Firestore에서 데이터 삭제
+            const plantDocRef = doc(db, "users", uid, "plants", id);
+            await deleteDoc(plantDocRef);
+
+            console.log("🗑️ 식물 삭제 완료:", id);
+            // onSnapshot을 사용 중이므로 plants 상태는 자동으로 업데이트됩니다.
+
         } catch (error) {
-            console.error("삭제 실패:", error);
+            console.error("삭제 중 오류 발생:", error);
+            alert("삭제에 실패했습니다. 다시 시도해주세요.");
         }
     };
 
