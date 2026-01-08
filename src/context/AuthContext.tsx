@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { signInAnonymously, type User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../firebase'; // 이전에 정의한 auth 객체 임포트
+import { auth } from '../firebase.ts'; // 이전에 정의한 auth 객체 임포트
 
 // Context 타입 정의
 interface AuthContextType {

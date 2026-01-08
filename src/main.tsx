@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-import { PlantProvider } from './components/context/PlantProvider.tsx'
+import { PlantProvider } from './context/PlantProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

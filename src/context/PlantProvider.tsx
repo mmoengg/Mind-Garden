@@ -10,10 +10,10 @@ import {
     query,
     arrayUnion
 } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { useAuth } from './AuthContext';
+import { db } from '../firebase.ts';
+import { useAuth } from './AuthContext.tsx';
 import type { Plant, Mood, CareLog } from '../types/Plant';
-import { PlantContext, type PlantContextType } from './plantContext';
+import { PlantContext, type PlantContextType } from './plantContext.ts';
 
 interface PlantProviderProps {
     children: ReactNode;
@@ -81,13 +81,69 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
     };
 
     const deleteDocPlant = async (id: string) => {
-        if (!uid) return;
+        // 로그인 체크
+        if (!uid) {
+            alert("로그인이 필요한 기능입니다.");
+            return;
+        }
+
+        // 삭제 확인 (실수 방지)
+        if (!window.confirm("정말로 삭제하시겠습니까? \n삭제된 식물은 복구할 수 없습니다.")) {
+            return;
+        }
+
         try {
-            const plantRef = doc(db, "users", uid, "plants", id);
-            await deleteDoc(plantRef);
-            console.log("🗑 식물 삭제 성공");
+            // Firestore에서 데이터 삭제
+            const plantDocRef = doc(db, "users", uid, "plants", id);
+            await deleteDoc(plantDocRef);
+
+            console.log("🗑️ 식물 삭제 완료:", id);
+            // onSnapshot을 사용 중이므로 plants 상태는 자동으로 업데이트됩니다.
+
         } catch (error) {
-            console.error("삭제 실패:", error);
+            console.error("삭제 중 오류 발생:", error);
+            alert("삭제에 실패했습니다. 다시 시도해주세요.");
+        }
+    };
+
+    // 물 주기
+    const waterPlant = async (plantId: string) => {
+        if (!uid) return;
+
+        try {
+            const plantRef = doc(db, "users", uid, "plants", plantId);
+            const today = new Date().toISOString().slice(0, 10); // "2024-05-20" 형식
+
+            // Firestore 업데이트 (날짜 갱신 + 로그 추가)
+            await updateDoc(plantRef, {
+                lastWateredDate: today,
+                logs: arrayUnion({
+                    id: Date.now().toString(), // 유니크한 ID
+                    date: today,
+                    type: 'water', // 타입: 물 주기
+                    content: '시원하게 물을 주었어요! 💧'
+                })
+            });
+
+            console.log("💧 물 주기 완료!");
+        } catch (error) {
+            console.error("물 주기 실패:", error);
+            alert("오류가 발생했습니다.");
+        }
+    };
+
+    // 수정
+    const updatePlant = async (updatedPlant: Plant) => {
+        if (!uid) return;
+
+        try {
+            const plantRef = doc(db, "users", uid, "plants", updatedPlant.id);
+            // 전체 필드 업데이트
+            await updateDoc(plantRef, { ...updatedPlant });
+            console.log("식물 정보 수정 완료!");
+        } catch (error) {
+            console.error("수정 실패:", error);
+            alert("정보 수정 중 오류가 발생했습니다.");
         }
     };
 
@@ -122,7 +178,9 @@ export const PlantProvider: React.FC<PlantProviderProps> = ({ children }) => {
     const value: PlantContextType = useMemo(() => ({
         plants,
         addPlant,
-        deletePlant: deleteDocPlant, // 이름 매핑
+        deletePlant: deleteDocPlant, // 이름 매핑,
+        waterPlant,
+        updatePlant,
         recordWatering,
         isLoading: authLoading || isDataLoading, // 인증 로딩 + 데이터 로딩
     }), [plants, authLoading, isDataLoading, uid]); // uid 의존성 추가

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { Droplet, AlertCircle } from 'lucide-react'; // 아이콘
-import type { Plant } from '../types/Plant';
-import { getDDay, formatDDay } from '../utils/date';
+import type { Plant } from '../../types/Plant';
+import { getDDay, formatDDay } from '../../utils/date';
 import clsx from 'clsx'; // 조건부 클래스 유틸
 
 interface PlantCardProps {
@@ -29,7 +29,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
     };
 
     return (
-        <Link to={`/plant/${plant.id}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-all hover:shadow-lg border border-stone-100">
+        <Link to={`/plant/${plant.id}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white transition-all hover:shadow-lg border border-stone-100">
 
             {/* 📸 사진 영역 (비율 4:5 또는 1:1) */}
             <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-100">

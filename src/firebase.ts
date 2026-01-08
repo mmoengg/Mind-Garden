@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 // 환경 변수에서 설정 값 가져오기
 const firebaseConfig = {
@@ -21,5 +22,6 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app); // Firestore 데이터베이스
 export const auth = getAuth(app);     // 인증 서비스
 export const analytics = getAnalytics(app);
+export const storage = getStorage(app);
 
 export default app;
