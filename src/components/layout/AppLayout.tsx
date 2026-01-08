@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 
-const AppLayout: React.FC<AppLayoutProps> = () => {
+const AppLayout: React.FC = () => {
     return (
         <div className="min-h-screen bg-background">
             <Navbar />
