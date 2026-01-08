@@ -1,36 +1,48 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { PlantProvider } from "./context/PlantProvider";
-import AppLayout from './components/layout/AppLayout';
+import React from "react";
+import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { PlantProvider } from './context/PlantProvider';
+
+// 페이지들
+import AppLayout from "./components/layout/AppLayout.tsx";
 import DashboardPage from './pages/DashboardPage';
-import MyPlantsPage from './pages/MyPlantsPage';
-import EditPlantPage from './pages/EditPlantPage';
-import MoodLogPage from './pages/MoodLogPage';
 import AddPlantPage from './pages/AddPlantPage';
-import PlantDetailPage from "./pages/PlantDetailPage.tsx";
+import MyPlantsPage from './pages/MyPlantsPage';
+import PlantDetailPage from './pages/PlantDetailPage';
+import EditPlantPage from './pages/EditPlantPage';
+import LoginPage from './pages/LoginPage';
+import MoodLogPage from "./pages/MoodLogPage.tsx";
+
+// ProtectedRoute 컴포넌트
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+    const { uid, isLoading } = useAuth();
+
+    if (isLoading) return <div className="p-10 text-center">로딩 중...</div>;
+
+    if (!uid) {
+        return <Navigate to="/login" replace />;
+    }
+
+    // ReactNode 타입은 return 할 때 Fragment로 감싸주거나 그냥 반환해도 됩니다.
+    return <>{children}</>;
+};
 
 function App() {
     return (
         <AuthProvider>
             <PlantProvider>
                 <Router>
-                    <AppLayout>
-                        <Routes>
-                            {/* 주요 내비게이션 경로 */}
-                            <Route path="/" element={<DashboardPage />} />
-                            <Route path="/my-plants" element={<MyPlantsPage />} />
-                            <Route path="/mood-log" element={<MoodLogPage />} />
-
-                            {/* 등록/설정 등 액션 경로 */}
-                            <Route path="/add-plant" element={<AddPlantPage />} />
-                            {/* 식물 상세 페이지 경로 */}
-                            <Route path="/plant/:id" element={<PlantDetailPage />} />
-                            {/* 식물 수정*/}
-                            <Route path="/plant/:id/edit" element={<EditPlantPage />} />
-
-                            {/* 404 페이지는 생략 */}
-                        </Routes>
-                    </AppLayout>
+                    <Routes>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route element={<AppLayout />}>
+                            <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+                            <Route path="/my-plants" element={<ProtectedRoute><MyPlantsPage /></ProtectedRoute>} />
+                            <Route path="/add-plant" element={<ProtectedRoute><AddPlantPage /></ProtectedRoute>} />
+                            <Route path="/plants/:id" element={<ProtectedRoute><PlantDetailPage /></ProtectedRoute>} />
+                            <Route path="/plants/:id/edit" element={<ProtectedRoute><EditPlantPage /></ProtectedRoute>} />
+                             <Route path="/mood-log" element={<ProtectedRoute><MoodLogPage /></ProtectedRoute>} />
+                        </Route>
+                    </Routes>
                 </Router>
             </PlantProvider>
         </AuthProvider>
@@ -38,76 +50,3 @@ function App() {
 }
 
 export default App;
-
-// import { useState } from "react";
-// import PlantCard from './components/plant/PlantCard';
-// import type { Plant } from './components/types/Plant';
-// import MoodModal from './components/MoodModal'
-//
-// function App() {
-//     // 임시 더미 데이터 (테스트용)
-//     const samplePlants: Plant[] = [
-//         {
-//             id: '1',
-//             name: '몬몬이',
-//             species: '몬스테라 델리시오사',
-//             adoptedDate: '2024-01-01',
-//             waterCycle: 7,
-//             lastWateredDate: '2025-12-01', // 예시: 물 준 지 좀 됨
-//             coverImage: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?q=80&w=1000&auto=format&fit=crop', // Unsplash 이미지
-//             logs: []
-//         },
-//         {
-//             id: '2',
-//             name: '스투키',
-//             species: '스투키',
-//             adoptedDate: '2024-03-15',
-//             waterCycle: 30,
-//             lastWateredDate: new Date().toISOString().split('T')[0], // 오늘 물 줌
-//             // coverImage 없음 (플레이스홀더 테스트)
-//             logs: []
-//         }
-//     ];
-//
-//     // 모달 관련 상태 추가
-//     const [isModalOpen, setIsModalOpen] = useState(false);
-//     const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
-//
-//     // 물 주기 버튼 클릭 핸들러 (모달 열기)
-//     const handleWater = (plant: Plant) => {
-//         setSelectedPlant(plant);
-//         setIsModalOpen(true);
-//     };
-//
-//     const closeModal = () => {
-//         setIsModalOpen(false);
-//         setSelectedPlant(null); // 모달 닫을 때 선택된 식물 초기화
-//     };
-//
-//     return (
-//         <div className="min-h-screen bg-background p-8">
-//             <div className="mx-auto max-w-md">
-//                 <header className="mb-8">
-//                     <h1 className="text-2xl font-bold text-primary-800">🌿 나의 정원</h1>
-//                     <p className="text-stone-500">오늘도 마음 한 뼘 자라나요.</p>
-//                 </header>
-//
-//                 {/* 카드 리스트 영역 */}
-//                 <div className="grid gap-6">
-//                     {samplePlants.map(plant => (
-//                         <PlantCard key={plant.id} plant={plant} onWater={handleWater} />
-//                     ))}
-//                 </div>
-//
-//                 {/* ⭐ 모달 렌더링 */}
-//                 <MoodModal
-//                     isOpen={isModalOpen}
-//                     onClose={closeModal}
-//                     plant={selectedPlant}
-//                 />
-//             </div>
-//         </div>
-//     );
-// }
-//
-// export default App;
