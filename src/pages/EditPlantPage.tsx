@@ -118,7 +118,7 @@ const EditPlantPage: React.FC = () => {
             await updatePlant(updatedPlant);
 
             alert("수정되었습니다!");
-            navigate(`/plant/${id}`); // 상세 페이지로 돌아가기
+            navigate(`/plants/${id}`); // 상세 페이지로 돌아가기
 
         } catch (error) {
             console.error("수정 실패:", error);
