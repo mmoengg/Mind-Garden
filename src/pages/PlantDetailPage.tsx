@@ -109,14 +109,16 @@ const PlantDetailPage: React.FC = () => {
                         </p>
 
                         {/* 물주기 버튼 */}
-                        <button
-                            onClick={handleWater}
-                            className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-blue-500 hover:bg-blue-50 hover:text-blue-600 px-4 py-2 flex items-center gap-2 rounded-full shadow-sm transition-all font-bold text-sm border border-blue-100 z-10"
-                            title="물 주기"
-                        >
-                            <Droplet size={18} className={isThirsty ? "animate-bounce" : ""} />
-                            <span>물 주기</span>
-                        </button>
+                        <p className="flex w-full items-center justify-center mb-6 md:absolute top-4 right-4 md:w-auto">
+                            <button
+                                onClick={handleWater}
+                                className=" bg-white/90 backdrop-blur-sm text-blue-500 hover:bg-blue-50 hover:text-blue-600 px-4 py-2 flex items-center gap-2 rounded-full shadow-sm transition-all font-bold text-sm border border-blue-100 z-10"
+                                title="물 주기"
+                            >
+                                <Droplet size={18} className={isThirsty ? "animate-bounce" : ""} />
+                                <span>물 주기</span>
+                            </button>
+                        </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm bg-stone-50 p-4 rounded-xl">
                             <span className="flex items-center text-stone-600">
