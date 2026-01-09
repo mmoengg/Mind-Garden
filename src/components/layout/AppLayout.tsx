@@ -11,7 +11,7 @@ const AppLayout: React.FC = () => {
             <div className="lg:h-[calc(100dvh-44px)] flex ">
                 <Navbar />
 
-                <main className="sm:p-6">
+                <main className="sm:p-3">
                     <div className="flex items-center justify-between lg:border lg:border-white lg:p-8 rounded-2xl lg:bg-white/70">
                         <Outlet />
                     </div>

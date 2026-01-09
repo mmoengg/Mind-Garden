@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     return (
         <>
             {/* PC: 고정 사이드바 */}
-            <aside className="hidden flex-shrink-0 lg:flex lg:flex-col lg:w-64 p-6">
+            <aside className="hidden flex-shrink-0 lg:flex lg:flex-col lg:w-64 p-3">
                 <nav className="flex flex-col">
                     {navItems.map((item) => (
                         <NavLink key={item.path} item={item} />

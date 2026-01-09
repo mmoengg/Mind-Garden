@@ -3,7 +3,7 @@ import { LogOut, User } from 'lucide-react';
 
 const Header: React.FC = () => {
     return (
-        <header className="w-full h-11 bg-white flex items-center justify-between px-6 z-50">
+        <header className="w-full h-11 flex items-center justify-between px-6 z-50">
             <h1 className="text-sm font-bold text-stone-800">Mind Garden</h1>
             <div className="flex  items-center gap-4">
                 <span className="w-7 h-7 flex items-center justify-center rounded-full bg-stone-200">
