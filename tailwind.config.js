@@ -5,6 +5,9 @@ export default {
 	],
 	theme: {
 		extend: {
+            backgroundImage: {
+                'bg-main': "url('/bg-main.png')",
+            },
 			colors: {
 				primary: {
 					50: '#f2fcf2',
@@ -48,6 +51,7 @@ export default {
 				},
 			},
 			fontFamily: {
+                chosungu: ['ChosunGu', 'sans-serif'],
 				sans: ['Pretendard', 'sans-serif'],
 			},
 			borderRadius: {

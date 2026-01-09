@@ -1,0 +1,17 @@
+# .prettierignore
+
+# 빌드 결과물 제외
+dist/
+build/
+
+# 패키지 모듈 제외
+node_modules/
+
+# 외부 라이브러리 (min 파일 등은 건드리면 안 됨)
+assets/js/lib/
+*.min.js
+*.min.css
+
+# 이미지, 폰트 제외
+assets/images/
+assets/fonts/

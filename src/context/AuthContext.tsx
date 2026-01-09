@@ -76,13 +76,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         logout
     };
 
-    // 로딩 화면 (너무 오래 걸리면 답답하니 텍스트 수정)
+    // 로딩 화면
     if (isLoading) {
         return (
-            <div className="flex h-screen items-center justify-center bg-stone-50 flex-col gap-4">
-                <span className="text-4xl animate-bounce">🌿</span>
-                <p className="text-xl text-primary-600 font-bold">
-                    잠시만 기다려주세요...
+            <div className="flex h-screen items-center justify-center flex-col gap-4 bg-main">
+                <span className="text animate-bounce">😊</span>
+                <p className="text-stone-700 ">
+                    로그인 중
                 </p>
             </div>
         );
