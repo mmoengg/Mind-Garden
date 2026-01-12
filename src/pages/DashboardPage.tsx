@@ -7,7 +7,13 @@ import MindWeatherWidget from '../components/dashboard/MindWeatherWidget.tsx';
 
 const DashboardPage: React.FC = () => {
     return (
-        <div className="flex gap-5 h-screen p-4 lg:pt-28">
+        <div className="relative flex gap-5 h-screen p-4 lg:pt-28">
+            <header className="absolute top-3 flex justify-between items-center w-[calc(100%-40px)] h-11">
+                <h2 className="text-xl font-bold">모아보기</h2>
+
+                {/* 새 식물 등록 버튼 유지 */}
+                <button className="flex items-center gap-2 py-2 px-4 bg-black text-white  rounded-3xl  transition-colors font-bold text-sm">Search</button>
+            </header>
             <div className="flex flex-col gap-5 w-2/3">
                 {/* 정원사 레벨 (높이 고정) */}
                 <div className="flex  h-[10%] flex-shrink-0">

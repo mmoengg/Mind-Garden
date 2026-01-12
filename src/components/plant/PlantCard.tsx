@@ -26,7 +26,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant, onWater }) => {
     };
 
     return (
-        <Link to={`/plants/${plant.id}`} className="relative flex flex-col justify-between p-4  rounded-3xl bg-white/50 transition-all hover:shadow-sm border border-white shadow-sm">
+        <Link to={`/plants/${plant.id}`} className="relative flex flex-col justify-between p-4 rounded-3xl bg-white/50 transition-all hover:shadow-sm border border-white shadow-sm">
             {/* 📸 사진 영역 (비율 4:5 또는 1:1) */}
             <div className="relative aspect-square rounded-2xl w-full h-[235px] overflow-hidden bg-stone-100">
                 {plant.coverImage ? (

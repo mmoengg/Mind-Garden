@@ -53,7 +53,7 @@ const PlantDetailPage: React.FC = () => {
     };
 
     return (
-        <div className="w-full h-full p-4 overflow-y-auto no-scrollbar">
+        <div className=" w-full h-full p-4 overflow-y-auto no-scrollbar">
             {/* 상단 액션 및 제목 */}
             <div className="flex justify-between items-center mb-6">
                 <button onClick={() => navigate(-1)} className="flex items-center text-stone-500 ">

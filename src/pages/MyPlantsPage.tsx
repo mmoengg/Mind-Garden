@@ -25,23 +25,22 @@ const MyPlantsPage: React.FC = () => {
     };
 
     return (
-        <div className="relative p-4 pb-20 lg:pt-28 lg:pb-4 w-full h-full overflow-y-auto no-scrollbar">
+        <div className="overflow-y-auto no-scrollbar relative p-4 pb-20 lg:pt-28 lg:pb-4 w-full h-full ">
             {/* 상단 헤더 및 등록 버튼 */}
-            <header className=" top-3 flex justify-between items-center  w-full mb-6">
-                <h2 className="font-bold">
+            <header className="absolute top-3 flex justify-between items-center w-[calc(100%-40px)] h-11">
+                <h2 className="text-xl font-bold">
                     나의 정원
-                    <p className="text-stone-500 text-sm font-normal">모든 식물 기록과 성장을 한눈에 확인하세요.</p>
+                    {/*<p className="text-stone-500 text-sm font-normal">모든 식물 기록과 성장을 한눈에 확인하세요.</p>*/}
                 </h2>
-
                 {/* 새 식물 등록 버튼 유지 */}
-                <Link to="/add-plant" className="flex items-center gap-2 border border-black font-bold py-2 px-4 rounded-xl hover:bg-yellow-100 transition-colors  text-sm">
-                    <Plus size={18} />새 식물 등록
+                <Link to="/add-plant" className="flex items-center hover:gap-2 h-9 px-4 border border-black bg-black text-white rounded-3xl font-bold text-sm -indent-[9999px] hover:indent-0 transition-all duration-200">
+                    <Plus size={16} />
+                    식물 등록
                 </Link>
             </header>
 
             {/* 식물 목록 표시 */}
             {plants.length === 0 ? (
-                // ... (식물이 없을 때 UI 유지) ...
                 <div className="text-center p-12 bg-white rounded-xl shadow-inner border border-stone-100">
                     <p className="text-stone-500 mb-4">아직 정원에 식물이 없어요!</p>
                     <Link to="/add-plant" className="text-primary-600 font-semibold hover:underline">
@@ -49,7 +48,7 @@ const MyPlantsPage: React.FC = () => {
                     </Link>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-5 overflow-y-auto">
+                <div className="overflow-y-auto no-scrollbar grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-5 h-full">
                     {plants.map((plant) => (
                         <PlantCard key={plant.id} plant={plant} onWater={handleWater} />
                     ))}
