@@ -1,21 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {Leaf} from 'lucide-react';
 import { navItems } from '../../data/nav';
 import clsx from 'clsx';
+import { LogOut, User } from 'lucide-react';
 
 const Navbar: React.FC = () => {
     const location = useLocation();
 
-    // 로고/헤더 컴포넌트 (PC 사이드바 상단에만 표시)
-    const Logo = () => (
-        <div className="hidden lg:flex items-center justify-start p-4 text-2xl font-bold text-primary-700 mb-6 border-b border-primary-100 pb-4">
-            <Leaf className="mr-2 h-6 w-6 fill-primary-300" />
-            Mind Garden
-        </div>
-    );
-
-    const NavLink: React.FC<{ item: typeof navItems[0] }> = ({ item }) => {
+    const NavLink: React.FC<{ item: (typeof navItems)[0] }> = ({ item }) => {
         const isActive = location.pathname === item.path;
         const Icon = item.icon;
 
@@ -23,16 +15,14 @@ const Navbar: React.FC = () => {
             <Link
                 to={item.path}
                 className={clsx(
-                    "flex items-center w-full transition-colors rounded-xl",
-                    "lg:p-3 lg:w-full lg:mb-2 lg:justify-start", // PC (사이드바 스타일)
-                    "justify-center flex-1 py-3 sm:text-sm", // Mobile (탭바 스타일)
-                    isActive
-                        ? "bg-primary-50 text-primary-700 font-semibold"
-                        : "text-stone-500 hover:bg-stone-100 hover:text-primary-600"
+                    'flex items-center justify-center w-11 rounded-xl transition-all duration-200',
+                    'border border-transparent lg:py-3.5  hover:bg-white/70 hover:border hover:border-white', // PC (사이드바 스타일)
+                    'justify-center flex-1 py-4 text-sm', // Mobile (탭바 스타일)
+                    isActive ? 'lg:bg-white lg:border lg:border-white text-stone-800 font-semibold ' : ' '
                 )}
             >
-                <Icon className="h-6 w-6 lg:mr-3" />
-                <span className="hidden lg:inline">{item.name}</span> {/* PC에서만 텍스트 표시 */}
+                <Icon className="h-4 w-4" />
+                {/*<span className="hidden lg:inline">{item.name}</span> /!* PC에서만 텍스트 표시 *!/*/}
             </Link>
         );
     };
@@ -40,19 +30,32 @@ const Navbar: React.FC = () => {
     return (
         <>
             {/* PC: 고정 사이드바 */}
-            <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:top-0 lg:left-0 lg:h-screen bg-white shadow-xl/10 p-4 border-r border-stone-100">
-                <Logo />
-                <nav className="flex flex-col">
-                    {navItems.map(item => (
-                        <NavLink key={item.path} item={item} />
-                    ))}
-                </nav>
+            <aside className="hidden lg:flex flex-col items-center justify-between flex-shrink-0 w-20 p-4">
+                <div className="flex flex-col gap-16">
+                    <h1 className="flex text-center font-bold text-sm text-stone-800 leading-[15px] cursor-default">
+                        mind
+                        <br /> garden
+                    </h1>
+                    <nav className="flex flex-col gap-1">
+                        {navItems.map((item) => (
+                            <NavLink key={item.path} item={item} />
+                        ))}
+                    </nav>
+                </div>
+                <div className="flex flex-col items-center gap-4">
+                    <button className="h-11 flex items-center justify-center ">
+                        <LogOut className="w-4 h-4" strokeWidth={2} color="#000000" />
+                    </button>
+                    <button className="w-11 h-11 flex items-center justify-center rounded-full bg-white">
+                        <User className="w-4 h-4" strokeWidth={2} color="#000000" />
+                    </button>
+                </div>
             </aside>
 
             {/* Mobile: 하단 탭 바 */}
-            <footer className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-stone-200 z-40 lg:hidden">
+            <footer className="fixed bottom-0 left-0 right-0 h-16  z-40 lg:hidden bg-white">
                 <nav className="flex h-full w-full justify-around items-center px-2">
-                    {navItems.map(item => (
+                    {navItems.map((item) => (
                         <NavLink key={item.path} item={item} />
                     ))}
                 </nav>

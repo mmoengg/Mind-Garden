@@ -1,69 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
+import DashboardLevel from '../components/dashboard/DashboardLevel.tsx';
+import BoardPlantCard from '../components/dashboard/BoardPlantCard.tsx';
 import { usePlants } from '../hooks/usePlants.ts';
-import type { Plant } from '../types/Plant';
-import PlantCard from '../components/plant/PlantCard.tsx';
-import MoodModal from '../components/MoodModal.tsx';
-import { getDDay } from '../utils/date.ts';
+import DashboardStats from '../components/dashboard/DashboardStats.tsx';
+import DashboardActionHub from '../components/dashboard/DashboardActionHub.tsx';
+import GardenHeatmap from '../components/dashboard/GardenHeatmap.tsx';
 
 const DashboardPage: React.FC = () => {
     const { plants } = usePlants();
 
-    // 모달 상태 및 선택된 식물 상태 추가
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
-
-    // 물 주기 버튼 클릭 핸들러 (모달 열기)
-    const handleWater = (plant: Plant) => {
-        setSelectedPlant(plant);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setSelectedPlant(null);
-    };
-
-    // 물 줄 시기가 된 식물 목록 (D-Day >= 0)
-    const thirstyPlants = plants.filter(p => getDDay(p.lastWateredDate, p.waterCycle) >= 0);
-
     return (
-        <div className="py-4">
-            <h1 className="text-3xl font-extrabold text-primary-800 mb-6">🏠 나의 정원 대시보드</h1>
+        <div className="overflow-auto grid grid-cols-1 lg:grid-cols-3 grid-rows-[150px_1.5fr_1fr] gap-5 h-full p-4 pb-20 lg:pt-28 lg:pb-4">
+            {/* 정원사 레벨 (높이 고정) */}
+            <div className="lg:col-span-2 bg-white/50 border border-white rounded-3xl shadow-sm">
+                <DashboardLevel />
+            </div>
 
-            {/* 1. 긴급 알림 영역 */}
-            {thirstyPlants.length > 0 && (
-                <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-8 shadow-sm">
-                    <p className="font-bold mb-1">🚨 긴급 알림: 물 줄 시간이에요!</p>
-                    <p className="text-sm">
-                        {thirstyPlants.map(p => p.name).join(', ')}에게 물을 주세요.
-                    </p>
-                </div>
-            )}
+            {/* 레이더 차트  */}
+            <div className="lg:col-span-1 lg:row-span-2 bg-white/50 border border-white rounded-3xl shadow-sm">
+                <DashboardStats />
+            </div>
 
-            {/* 2. 식물 목록 영역 */}
-            {plants.length === 0 ? (
-                <div className="text-center p-12  rounded-xl shadow-inner border border-stone-100 bg-white" >
-                    <p className="text-stone-500 mb-4">아직 정원에 식물이 없어요! '나의 정원'에서 식물을 등록해주세요.</p>
-                </div>
-            ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {/* PlantCard 렌더링 및 handleWater 연결 */}
-                    {plants.map(plant => (
-                        <PlantCard
-                            key={plant.id}
-                            plant={plant}
-                            onWater={handleWater}
-                        />
+            {/* Action Hub (할 일 & 감정 기록) */}
+            <div className="lg:col-span-2">
+                <DashboardActionHub />
+            </div>
+
+            {/* 식물 리스트  */}
+            <div className="lg:col-span-2 w-full h-full bg-white/50 border border-white rounded-3xl shadow-sm p-6">
+                <ul className="flex gap-4 overflow-x-auto w-full snap-x snap-mandatory no-scrollbar">
+                    {plants.map((plant) => (
+                        <BoardPlantCard key={plant.id} plant={plant} />
                     ))}
-                </div>
-            )}
+                </ul>
+            </div>
 
-            {/* MoodModal 렌더링 (모달 열기/닫기 로직) */}
-            <MoodModal
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                plant={selectedPlant}
-            />
+            {/* 잔디 심기 히트맵 */}
+            <div className="lg:col-span-1 bg-white/50 border border-white rounded-3xl shadow-sm">
+                <GardenHeatmap />
+            </div>
         </div>
     );
 };
