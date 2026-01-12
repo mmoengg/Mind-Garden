@@ -13,7 +13,7 @@ interface Props {
 
 const GardenRadarChart: React.FC<Props> = ({ data }) => {
     return (
-        <div className="w-full h-full min-h-[250px]">
+        <div className="w-full h-full">
             {' '}
             {/* 최소 높이 확보 중요! */}
             <ResponsiveContainer width="100%" height="100%">

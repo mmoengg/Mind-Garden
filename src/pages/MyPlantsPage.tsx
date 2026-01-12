@@ -25,7 +25,7 @@ const MyPlantsPage: React.FC = () => {
     };
 
     return (
-        <div className="relative p-4 pb-20 lg:pt-28 lg:pb-0 w-full ">
+        <div className="relative p-4 pb-20 lg:pt-28 lg:pb-4 w-full h-full overflow-y-auto no-scrollbar">
             {/* 상단 헤더 및 등록 버튼 */}
             <header className=" top-3 flex justify-between items-center  w-full mb-6">
                 <h2 className="font-bold">
@@ -49,8 +49,7 @@ const MyPlantsPage: React.FC = () => {
                     </Link>
                 </div>
             ) : (
-                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {/* PlantCard 렌더링 */}
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-5 overflow-y-auto">
                     {plants.map((plant) => (
                         <PlantCard key={plant.id} plant={plant} onWater={handleWater} />
                     ))}
