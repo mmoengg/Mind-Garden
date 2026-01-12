@@ -22,7 +22,7 @@ const GardenHeatmap = () => {
     };
 
     return (
-        <div className="w-full h-full  p-6 flex flex-col gap-4 shadow-sm">
+        <div className="w-full h-full p-6 flex flex-col gap-4">
             {/* 헤더: 제목 및 범례 */}
             <div className="flex justify-between items-end">
                 <div>
@@ -47,7 +47,7 @@ const GardenHeatmap = () => {
            grid-flow-col: 데이터가 세로로 먼저 채워지고, 칸이 차면 오른쪽으로 이동 (Github 방식)
         */}
                 <div className="grid grid-rows-7 grid-flow-col gap-1 w-fit">
-                    {days.map((day, index) => (
+                    {days.map((day) => (
                         <div
                             key={day.date}
                             className={`w-3 h-3 rounded-sm ${getColor(day.count)} hover:ring-2 hover:ring-gray-300 transition-all cursor-pointer relative group`}

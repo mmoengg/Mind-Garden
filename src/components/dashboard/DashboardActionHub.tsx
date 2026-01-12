@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 const DashboardActionHub = () => {
-    // --- 1. 가짜 데이터 (나중에 DB 연결하면 됩니다) ---
     const urgentPlant = {
         id: 1,
         name: '몬스테라',
@@ -10,10 +9,8 @@ const DashboardActionHub = () => {
         image: '🌿', // 나중엔 이미지 URL
     };
 
-    // 물주기 완료 상태 관리
     const [isWatered, setIsWatered] = useState(false);
 
-    // --- 2. 렌더링 ---
     return (
         <div className="flex flex-col gap-4 h-full">
             {/* 🚨 위쪽 카드: 긴급 물주기 알림 */}

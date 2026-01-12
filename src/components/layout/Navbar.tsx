@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
             </aside>
 
             {/* Mobile: 하단 탭 바 */}
-            <footer className="fixed bottom-0 left-0 right-0 h-16  border-t border-stone-200 z-40 lg:hidden">
+            <footer className="fixed bottom-0 left-0 right-0 h-16  z-40 lg:hidden bg-white">
                 <nav className="flex h-full w-full justify-around items-center px-2">
                     {navItems.map((item) => (
                         <NavLink key={item.path} item={item} />

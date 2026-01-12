@@ -10,7 +10,7 @@ const DashboardPage: React.FC = () => {
     const { plants } = usePlants();
 
     return (
-        <div className="overflow-auto grid grid-cols-1 lg:grid-cols-3 grid-rows-[150px_1.5fr_1fr] gap-5 h-full p-4 pt-28">
+        <div className="overflow-auto grid grid-cols-1 lg:grid-cols-3 grid-rows-[150px_1.5fr_1fr] gap-5 h-full p-4 pb-20 lg:pt-28 lg:pb-4">
             {/* 정원사 레벨 (높이 고정) */}
             <div className="lg:col-span-2 bg-white/50 border border-white rounded-3xl shadow-sm">
                 <DashboardLevel />

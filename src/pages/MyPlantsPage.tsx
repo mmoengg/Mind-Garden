@@ -25,18 +25,19 @@ const MyPlantsPage: React.FC = () => {
     };
 
     return (
-        <div className="py-4">
+        <div className="relative p-4 pb-20 lg:pt-28 lg:pb-0 w-full ">
             {/* 상단 헤더 및 등록 버튼 */}
-            <header className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold">🌱 나의 정원</h2>
+            <header className=" top-3 flex justify-between items-center  w-full mb-6">
+                <h2 className="font-bold">
+                    나의 정원
+                    <p className="text-stone-500 text-sm font-normal">모든 식물 기록과 성장을 한눈에 확인하세요.</p>
+                </h2>
 
                 {/* 새 식물 등록 버튼 유지 */}
-                <Link to="/add-plant" className="flex items-center gap-2 bg-primary-600 text-white font-bold py-2 px-4 rounded-xl hover:bg-primary-700 transition-colors shadow-md shadow-primary-200 text-sm">
+                <Link to="/add-plant" className="flex items-center gap-2 border border-black font-bold py-2 px-4 rounded-xl hover:bg-yellow-100 transition-colors  text-sm">
                     <Plus size={18} />새 식물 등록
                 </Link>
             </header>
-
-            <p className="text-stone-500 mb-8">모든 식물 기록과 성장을 한눈에 확인하세요.</p>
 
             {/* 식물 목록 표시 */}
             {plants.length === 0 ? (
