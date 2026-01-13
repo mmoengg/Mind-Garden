@@ -53,7 +53,7 @@ const PlantDetailPage: React.FC = () => {
     };
 
     return (
-        <div className=" w-full h-full p-4 overflow-y-auto no-scrollbar">
+        <div className="w-full h-full p-4 overflow-y-auto no-scrollbar">
             {/* 상단 액션 및 제목 */}
             <div className="flex justify-between items-center mb-6">
                 <button onClick={() => navigate(-1)} className="flex items-center text-stone-500 ">
@@ -76,12 +76,12 @@ const PlantDetailPage: React.FC = () => {
                 </div>
             </div>
 
-            <div className="flex gap-10 w-full">
+            <div className="flex flex-col lg:flex-row gap-10 w-full">
                 {/* 식물 정보 개요 */}
-                <div className="flex-shrink-0 w-[400px] flex p-4 border border-white  shadow-sm rounded-3xl bg-white/50">
+                <div className="flex-shrink-0 lg:w-[400px] flex p-4 border border-white  shadow-sm rounded-3xl bg-white/50">
                     <div className="flex flex-col items-center gap-6 w-full">
                         {/* 대표 사진 영역 */}
-                        <div className="w-full h-72 flex-shrink-0 rounded-2xl overflow-hidden bg-stone-100 shadow-inner border border-stone-100">{plant.coverImage ? <img src={plant.coverImage} alt={plant.name} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center w-full h-full text-6xl opacity-50">🌿</div>}</div>
+                        <div className="w-full h-36 lg:h-72 flex-shrink-0 rounded-2xl overflow-hidden bg-stone-100 shadow-inner border border-stone-100">{plant.coverImage ? <img src={plant.coverImage} alt={plant.name} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center w-full h-full text-6xl opacity-50">🌿</div>}</div>
 
                         {/* 기본 정보 */}
                         <div className="relative flex flex-col gap-5 w-full text-center">

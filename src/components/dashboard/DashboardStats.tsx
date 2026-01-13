@@ -18,7 +18,7 @@ const DashboardStats = () => {
             </div>
 
             {/* 차트 컴포넌트 불러오기 */}
-            <div className="w-full flex-1 flex items-center justify-center">
+            <div className="w-full flex-1 min-h-[300px] flex items-center justify-center">
                 <GardenRadarChart data={chartData} />
             </div>
 

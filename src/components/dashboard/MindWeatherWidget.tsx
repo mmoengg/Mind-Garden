@@ -11,7 +11,7 @@ const MindWeatherWidget: React.FC = () => {
             </div>
 
             {/* 5가지 감정 아이콘 버튼 */}
-            <div className="flex justify-between gap-4 flex-1">
+            <div className="flex justify-between gap-1 lg:gap-4 flex-1">
                 {['😆', '🙂', '😐', '😢', '😡'].map((emoji, index) => (
                     <button key={index} className="w-full h-full py-4 bg-white rounded-2xl text-2xl flex items-center justify-center hover:bg-yellow-100 hover:scale-110 transition-all border border-gray-100 shadow-sm" onClick={() => alert(`${emoji} 감정을 선택하셨네요! (일기장으로 이동)`)}>
                         {emoji}

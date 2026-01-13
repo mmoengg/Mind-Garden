@@ -25,7 +25,7 @@ const MyPlantsPage: React.FC = () => {
     };
 
     return (
-        <div className="overflow-y-auto no-scrollbar relative p-4 pb-20 lg:pt-28 lg:pb-4 w-full h-full ">
+        <div className="overflow-y-auto no-scrollbar relative pt-20 p-4 pb-20 lg:pt-28 lg:pb-4 w-full h-full ">
             {/* 상단 헤더 및 등록 버튼 */}
             <header className="absolute top-3 flex justify-between items-center w-[calc(100%-40px)] h-11">
                 <h2 className="text-xl font-bold">

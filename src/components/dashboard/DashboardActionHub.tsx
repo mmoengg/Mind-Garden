@@ -15,9 +15,9 @@ const DashboardActionHub = () => {
     const { plants } = usePlants();
 
     return (
-        <div className="flex flex-col flex-1 gap-5">
+        <div className="flex flex-col w-full gap-5">
             {/* 긴급 물주기 알림 */}
-            <div className="relative flex items-center justify-between  p-5 border border-white rounded-3xl shadow-sm  bg-white/50   ">
+            <div className="relative flex items-center justify-between flex-col lg:flex-row p-3 lg:p-5 border border-white rounded-3xl shadow-sm  bg-white/50   ">
                 {/*/!* 배경 장식 *!/*/}
                 {/*<div className="absolute right-0 top-0 w-28 bg-yellow-200 rounded-full blur-2xl -z-10 translate-x-8 -translate-y-8"></div>*/}
 
@@ -30,7 +30,7 @@ const DashboardActionHub = () => {
                 ) : (
                     // (B) 물 줘야 할 때 보여줄 화면
                     <>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center f gap-4">
                             <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-4xl shadow-inner">{urgentPlant.image}</div>
                             <div>
                                 <div className="flex items-center gap-2 mb-1">
@@ -40,7 +40,6 @@ const DashboardActionHub = () => {
                                 <p className="text-gray-500">하루 종일 목말라 하고 있어요 😭</p>
                             </div>
                         </div>
-
                         <button onClick={() => setIsWatered(true)} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95 flex items-center gap-2">
                             <span>💧</span> 물 주기
                         </button>
