@@ -7,6 +7,7 @@ import { Camera, Calendar, Hash, Leaf, Droplet, Upload, Loader2, type LucideIcon
 import imageCompression from 'browser-image-compression';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase.ts';
+import { addXP } from '../services/xpService.ts';
 
 // 폼 입력 필드 컴포넌트 (반복되는 디자인 간소화)
 const InputField: React.FC<{
@@ -63,7 +64,6 @@ const AddPlantPage: React.FC = () => {
 
             // 이미지 압축 시도
             const compressedFile = await imageCompression(file, options);
-
             console.log(`압축 후 크기: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
 
             setSelectedFile(compressedFile); // 압축된 파일 저장
@@ -130,8 +130,9 @@ const AddPlantPage: React.FC = () => {
                 name,
                 species,
                 adoptedDate,
+                delYn: 'N',
                 waterCycle,
-                coverImage: downloadUrl, // ⭐ 여기에 Storage URL이 들어갑니다
+                coverImage: downloadUrl,
                 lastWateredDate: adoptedDate,
                 logs: [
                     {
@@ -145,6 +146,7 @@ const AddPlantPage: React.FC = () => {
 
             // Firestore에 저장 요청
             await addPlant(newPlant);
+            await addXP(uid, 30); // 식물 등록은 30점
 
             alert(`${name}의 정원 생활을 시작합니다!`);
             navigate('/my-plants');

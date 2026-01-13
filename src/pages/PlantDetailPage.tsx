@@ -1,16 +1,19 @@
 // src/pages/PlantDetailPage.tsx
 
-import React, { useState } from 'react'; // useEffect 삭제 (불필요)
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Droplet, Calendar, Hash, ArrowLeft, Trash2, Edit, PlusCircle } from 'lucide-react';
-import { usePlants } from '../hooks/usePlants.ts';
-import { formatDDay, getDDay } from '../utils/date.ts';
 import TimelineLog from '../components/plant/TimelineLog.tsx';
 import MoodModal from '../components/MoodModal.tsx';
+import { useAuth } from '../context/AuthContext.tsx';
+import { usePlants } from '../hooks/usePlants.ts';
+import { addXP } from '../services/xpService.ts';
 import type { Plant } from '../types/Plant';
+import { formatDDay, getDDay } from '../utils/date.ts';
 
 const PlantDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const { uid } = useAuth();
     const navigate = useNavigate();
     const { plants, deletePlant, waterPlant } = usePlants();
     const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
@@ -51,7 +54,9 @@ const PlantDetailPage: React.FC = () => {
         if (!plant) return;
         if (window.confirm('식물에게 물을 주시겠어요? 💧')) {
             await waterPlant(plant.id);
-            // alert("식물이 기뻐합니다! 🌱"); // 선택 사항
+            if (typeof uid === 'string') {
+                await addXP(uid, 10);
+            } // 물 주기 경험치 10점
         }
     };
 

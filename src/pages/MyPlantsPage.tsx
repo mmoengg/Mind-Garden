@@ -57,16 +57,11 @@ const MyPlantsPage: React.FC = () => {
                     </Link>
                 </div>
             ) : (
-                <div className="overflow-y-auto no-scrollbar grid grid-cols-1 gap-3 lg:gap-5 sm:grid-cols-1 lg:grid-cols-5 h-full">
+                <div className="overflow-y-auto no-scrollbar grid grid-cols-1 gap-3 lg:gap-5 lg:grid-rows-2 lg:grid-cols-3 h-full">
                     {sortedPlants.map((plant) => (
                         <PlantCard key={plant.id} plant={plant} />
                     ))}
                 </div>
-                // <div className="overflow-y-auto no-scrollbar grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-5 h-full">
-                //     {plants.map((plant) => (
-                //         <PlantCard key={plant.id} plant={plant} />
-                //     ))}
-                // </div>
             )}
         </div>
     );

@@ -1,4 +1,6 @@
 import GardenRadarChart from '../charts/GardenRadarChart';
+import { CircleQuestionMark } from 'lucide-react';
+import { useState } from 'react';
 
 const DashboardStats = () => {
     const chartData = [
@@ -9,11 +11,20 @@ const DashboardStats = () => {
         { subject: '소통', A: 60, fullMark: 100 },
     ];
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleValueClick = () => {
+        setIsModalOpen(true);
+    };
+
     return (
-        <div className="flex flex-col items-center justify-center flex-1 p-6">
+        <div className="flex flex-col items-center justify-center flex-1 relative p-6">
             {/* 타이틀 영역 */}
-            <div className="w-full">
-                <h3 className="font-bold text-gray-800"> 나의 정원 균형</h3>
+            <div className="flex items-center justify-between w-full">
+                <h3 className="font-bold text-gray-800">나의 정원 균형</h3>
+                <button type="button" onClick={handleValueClick}>
+                    <CircleQuestionMark size={16} />
+                </button>
                 {/*<p className="text-gray-500">'기록' 점수가 조금 부족해요! 일기를 써보세요 📝</p>*/}
             </div>
 
@@ -31,6 +42,8 @@ const DashboardStats = () => {
                     🔧 보완: <span className="font-bold text-orange-400">기록</span>
                 </span>
             </div>
+
+            {isModalOpen && <div className="absolute top-0 right-0 w-52 h-52 bg-white border border-gray-200 rounded-2xl z-1">모달 창</div>}
         </div>
     );
 };
