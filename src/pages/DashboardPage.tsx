@@ -7,7 +7,7 @@ import MindWeatherWidget from '../components/dashboard/MindWeatherWidget.tsx';
 
 const DashboardPage: React.FC = () => {
     return (
-        <div className="overflow-y-auto relative flex gap-5 pb-20 flex-col lg:flex-row min-h-screen  p-4 lg:pt-28">
+        <div className="overflow-y-auto relative flex gap-5 flex-col lg:flex-row min-h-screen p-4 pb-20 lg:pt-28 lg:pb-4">
             <header className="absolute top-3 flex justify-between items-center w-[calc(100%-40px)] h-11">
                 <h2 className="text-xl font-bold">모아보기</h2>
                 <button className="flex items-center gap-2 py-2 px-4 bg-black text-white  rounded-3xl  transition-colors font-bold text-sm">Search</button>

@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { usePlants } from '../hooks/usePlants.ts';
 import PlantCard from '../components/plant/PlantCard.tsx';
-import MoodModal from '../components/MoodModal.tsx';
-import type { Plant } from '../types/Plant';
+import { getDDay } from '../utils/date';
 
 const MyPlantsPage: React.FC = () => {
     const { plants } = usePlants();
 
-    // ⭐ 모달 상태 및 선택된 식물 상태 추가
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
+    const sortedPlants = useMemo(() => {
+        return [...plants].sort((a, b) => {
+            // A와 B의 D-Day를 각각 계산
+            const dDayA = getDDay(a.lastWateredDate, a.waterCycle);
+            const dDayB = getDDay(b.lastWateredDate, b.waterCycle);
 
-    // ⭐ 물 주기 버튼 클릭 핸들러 (모달 열기 로직으로 대체)
-    const handleWater = (plant: Plant) => {
-        setSelectedPlant(plant);
-        setIsModalOpen(true);
-    };
+            const isThirstyA = dDayA >= 0; // A가 목마른가?
+            const isThirstyB = dDayB >= 0; // B가 목마른가?
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setSelectedPlant(null);
-    };
+            // A만 목마르면 -> A를 앞으로 보냄
+            if (isThirstyA && !isThirstyB) return -1;
+
+            // B만 목마르면 -> B를 앞으로 보냄
+            if (!isThirstyA && isThirstyB) return 1;
+
+            // 둘 다 목마르다면? -> 더 급한(D-Day 숫자가 큰) 애가 위로 오게
+            // (예: D+5가 D+1보다 위에 뜸)
+            if (isThirstyA && isThirstyB) {
+                return dDayB - dDayA;
+            }
+
+            return 0;
+        });
+    }, [plants]);
 
     return (
         <div className="overflow-y-auto no-scrollbar relative pt-20 p-4 pb-20 lg:pt-28 lg:pb-4 w-full h-full ">
@@ -48,15 +57,17 @@ const MyPlantsPage: React.FC = () => {
                     </Link>
                 </div>
             ) : (
-                <div className="overflow-y-auto no-scrollbar grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-5 h-full">
-                    {plants.map((plant) => (
-                        <PlantCard key={plant.id} plant={plant} onWater={handleWater} />
+                <div className="overflow-y-auto no-scrollbar grid grid-cols-1 gap-3 lg:gap-5 sm:grid-cols-1 lg:grid-cols-5 h-full">
+                    {sortedPlants.map((plant) => (
+                        <PlantCard key={plant.id} plant={plant} />
                     ))}
                 </div>
+                // <div className="overflow-y-auto no-scrollbar grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-5 h-full">
+                //     {plants.map((plant) => (
+                //         <PlantCard key={plant.id} plant={plant} />
+                //     ))}
+                // </div>
             )}
-
-            {/* ⭐ MoodModal 렌더링 추가 */}
-            <MoodModal isOpen={isModalOpen} onClose={closeModal} plant={selectedPlant} />
         </div>
     );
 };

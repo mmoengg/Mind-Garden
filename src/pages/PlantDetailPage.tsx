@@ -1,18 +1,22 @@
 // src/pages/PlantDetailPage.tsx
 
-import React from 'react'; // useEffect 삭제 (불필요)
+import React, { useState } from 'react'; // useEffect 삭제 (불필요)
 import { useParams, useNavigate } from 'react-router-dom';
-import { Droplet, Calendar, Hash, ArrowLeft, Trash2, Edit } from 'lucide-react';
+import { Droplet, Calendar, Hash, ArrowLeft, Trash2, Edit, PlusCircle } from 'lucide-react';
 import { usePlants } from '../hooks/usePlants.ts';
 import { formatDDay, getDDay } from '../utils/date.ts';
 import TimelineLog from '../components/plant/TimelineLog.tsx';
+import MoodModal from '../components/MoodModal.tsx';
+import type { Plant } from '../types/Plant';
 
 const PlantDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { plants, deletePlant, waterPlant } = usePlants();
+    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // ID에 맞는 식물 찾기 (Context가 업데이트되면 자동으로 다시 계산됨)
+    // ID에 맞는 식물 찾기
     const plant = plants.find((p) => p.id === id);
 
     // 식물이 없을 때 (삭제 직후거나 주소가 잘못되었을 때)
@@ -26,6 +30,16 @@ const PlantDetailPage: React.FC = () => {
             </div>
         );
     }
+
+    const handleAddMood = () => {
+        setIsModalOpen(true);
+        setSelectedPlant(plant);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedPlant(null);
+    };
 
     // D-Day 및 상태 계산
     const dDay = getDDay(plant.lastWateredDate, plant.waterCycle);
@@ -62,6 +76,12 @@ const PlantDetailPage: React.FC = () => {
                 </button>
 
                 <div className="flex items-center">
+                    {/* 기록 추가 버튼 */}
+                    <button className="flex items-center gap-1 text-stone-500 hover:text-red-600 hover:bg-red-50 px-3 transition-colors" title="기록 추가하기" onClick={handleAddMood}>
+                        <PlusCircle size={14} />
+                        <span className="text-sm">추가</span>
+                    </button>
+
                     {/* 수정 버튼 */}
                     <button className="flex items-center gap-1 text-stone-500 hover:text-red-600 hover:bg-red-50 px-3 transition-colors" title="식물 수정하기" onClick={() => navigate(`/plants/${id}/edit`)}>
                         <Edit size={14} />
@@ -81,7 +101,7 @@ const PlantDetailPage: React.FC = () => {
                 <div className="flex-shrink-0 lg:w-[400px] flex p-4 border border-white  shadow-sm rounded-3xl bg-white/50">
                     <div className="flex flex-col items-center gap-6 w-full">
                         {/* 대표 사진 영역 */}
-                        <div className="w-full h-36 lg:h-72 flex-shrink-0 rounded-2xl overflow-hidden bg-stone-100 shadow-inner border border-stone-100">{plant.coverImage ? <img src={plant.coverImage} alt={plant.name} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center w-full h-full text-6xl opacity-50">🌿</div>}</div>
+                        <div className="w-full h-36 lg:h-72 flex-shrink-0 rounded-2xl overflow-hidden bg-stone-100 shadow-inner border border-stone-100">{plant.coverImage ? <img src={plant.coverImage} alt={plant.name} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center w-full h-full text-3xl opacity-50">🌿</div>}</div>
 
                         {/* 기본 정보 */}
                         <div className="relative flex flex-col gap-5 w-full text-center">
@@ -135,6 +155,9 @@ const PlantDetailPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* MoodModal 렌더링 추가 */}
+            <MoodModal isOpen={isModalOpen} onClose={closeModal} plant={selectedPlant} />
         </div>
     );
 };
