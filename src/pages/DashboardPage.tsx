@@ -1,43 +1,43 @@
 import React from 'react';
-import DashboardLevel from '../components/dashboard/DashboardLevel.tsx';
-import BoardPlantCard from '../components/dashboard/BoardPlantCard.tsx';
-import { usePlants } from '../hooks/usePlants.ts';
-import DashboardStats from '../components/dashboard/DashboardStats.tsx';
+import LevelProgressBar from '../components/dashboard/LevelProgressBar.tsx';
 import DashboardActionHub from '../components/dashboard/DashboardActionHub.tsx';
-import GardenHeatmap from '../components/dashboard/GardenHeatmap.tsx';
+import MindWeatherWidget from '../components/dashboard/MindWeatherWidget.tsx';
+import DashboardStats from '../components/dashboard/DashboardStats.tsx';
+import WeatherWidget from '../components/dashboard/WeatherWidget.tsx';
+import { useUserLevel } from '../hooks/useUserLevel';
 
 const DashboardPage: React.FC = () => {
-    const { plants } = usePlants();
+    const { currentXP } = useUserLevel();
 
     return (
-        <div className="overflow-auto grid grid-cols-1 lg:grid-cols-3 grid-rows-[150px_1.5fr_1fr] gap-5 h-full p-4 pb-20 lg:pt-28 lg:pb-4">
-            {/* 정원사 레벨 (높이 고정) */}
-            <div className="lg:col-span-2 bg-white/50 border border-white rounded-3xl shadow-sm">
-                <DashboardLevel />
+        <div className="overflow-y-auto relative flex gap-5 flex-col lg:flex-row min-h-screen p-4 pb-20 lg:pt-28 lg:pb-4">
+            <header className="absolute top-3 flex justify-between items-center w-[calc(100%-40px)] h-11">
+                <h2 className="text-xl font-bold">모아보기</h2>
+                <button className="flex items-center gap-2 py-2 px-4 bg-black text-white  rounded-3xl  transition-colors font-bold text-sm">Search</button>
+            </header>
+            <div className="flex flex-col gap-5 w-full lg:w-2/3 pt-16 lg:pt-0">
+                {/* 정원사 레벨 */}
+                <div className="flex h-auto lg:h-[10%] flex-shrink-0">
+                    <LevelProgressBar currentXP={currentXP} />
+                </div>
+                {/* 긴급 식물 & 식물 목록 */}
+                <div className="flex h-full">
+                    <DashboardActionHub />
+                </div>
+                {/* 감정 기록 유도 */}
+                <div className="flex h-[calc(30%)] flex-shrink-0">
+                    <MindWeatherWidget />
+                </div>
             </div>
-
-            {/* 레이더 차트  */}
-            <div className="lg:col-span-1 lg:row-span-2 bg-white/50 border border-white rounded-3xl shadow-sm">
-                <DashboardStats />
-            </div>
-
-            {/* Action Hub (할 일 & 감정 기록) */}
-            <div className="lg:col-span-2">
-                <DashboardActionHub />
-            </div>
-
-            {/* 식물 리스트  */}
-            <div className="lg:col-span-2 w-full h-full bg-white/50 border border-white rounded-3xl shadow-sm p-6">
-                <ul className="flex gap-4 overflow-x-auto w-full snap-x snap-mandatory no-scrollbar">
-                    {plants.map((plant) => (
-                        <BoardPlantCard key={plant.id} plant={plant} />
-                    ))}
-                </ul>
-            </div>
-
-            {/* 잔디 심기 히트맵 */}
-            <div className="lg:col-span-1 bg-white/50 border border-white rounded-3xl shadow-sm">
-                <GardenHeatmap />
+            <div className="flex flex-col gap-5 w-full lg:w-1/3">
+                {/* 레이더 차트  */}
+                <div className="flex h-full">
+                    <DashboardStats />
+                </div>
+                {/* 날씨 위젯 */}
+                <div className="flex h-auto lg:h-[calc(30%)] flex-shrink-0">
+                    <WeatherWidget />
+                </div>
             </div>
         </div>
     );

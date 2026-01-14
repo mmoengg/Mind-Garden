@@ -1,13 +1,7 @@
 // src/context/AuthContext.tsx
 
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import {
-    type User,
-    onAuthStateChanged,
-    signInWithPopup,
-    GoogleAuthProvider,
-    signOut
-} from 'firebase/auth';
+import { type User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 interface AuthContextType {
@@ -29,12 +23,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setCurrentUser(user);
-                console.log("✅ 로그인 됨:", user.uid);
+                console.log('✅ 로그인 됨:', user.uid);
             } else {
                 setCurrentUser(null);
-                console.log("👋 로그아웃 됨");
+                console.log('👋 로그아웃 됨');
             }
-            // ⭐ 핵심: 로그인 여부 확인이 끝나면 로딩을 '반드시' 꺼줍니다.
             setIsLoading(false);
         });
 
@@ -49,8 +42,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             await signInWithPopup(auth, provider);
             // 로그인 성공하면 위 useEffect가 감지해서 로딩을 다시 꺼줍니다.
         } catch (error) {
-            console.error("로그인 실패:", error);
-            alert("로그인에 실패했습니다.");
+            console.error('로그인 실패:', error);
+            alert('로그인에 실패했습니다.');
             setIsLoading(false); // ⭐ 실패해도 로딩은 꺼줘야 함!
         }
     };
@@ -62,7 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             await signOut(auth);
             setCurrentUser(null);
         } catch (error) {
-            console.error("로그아웃 실패:", error);
+            console.error('로그아웃 실패:', error);
         } finally {
             setIsLoading(false); // 끝나면 로딩 끄기
         }
@@ -73,7 +66,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isLoading,
         uid: currentUser ? currentUser.uid : null,
         loginWithGoogle,
-        logout
+        logout,
     };
 
     // 로딩 화면
@@ -81,18 +74,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return (
             <div className="flex h-screen items-center justify-center flex-col gap-4 bg-main">
                 <span className="text animate-bounce">😊</span>
-                <p className="text-stone-700 ">
-                    로그인 중
-                </p>
+                <p className="text-stone-700 ">로그인 중</p>
             </div>
         );
     }
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {

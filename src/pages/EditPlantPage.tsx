@@ -11,7 +11,7 @@ import imageCompression from 'browser-image-compression';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase'; // 경로 수정 완료 (../)
 
-// UI 컴포넌트 (입력창) - 깜빡임 방지를 위해 밖으로 뺐습니다
+// UI 컴포넌트 (입력창) - 깜빡임 방지
 const InputField: React.FC<{
     label: string;
     id: string;
@@ -23,32 +23,26 @@ const InputField: React.FC<{
     min?: number;
 }> = ({ label, id, value, onChange, type = 'text', icon: Icon, placeholder, min }) => (
     <div className="mb-6">
-        <label htmlFor={id} className="block text-sm font-semibold text-stone-700 mb-2">{label}</label>
-        <div className="flex items-center border border-stone-300 rounded-xl p-3 bg-white focus-within:ring-2 focus-within:ring-primary-300 transition-all">
+        <label htmlFor={id} className="block font-semibold text-stone-700 mb-2">
+            {label}
+        </label>
+        <div className="flex items-center border border-stone-300 rounded-xl px-3 py-2.5 bg-white focus-within:ring-1 focus-within:ring-primary-300 transition-all">
             <Icon className="w-5 h-5 text-stone-400 mr-3" />
-            <input
-                id={id}
-                type={type}
-                value={value}
-                onChange={onChange as any}
-                className="w-full outline-none text-stone-700"
-                placeholder={placeholder}
-                min={min}
-            />
+            <input id={id} type={type} value={value} onChange={onChange as any} className="w-full outline-none text-stone-700" placeholder={placeholder} min={min} />
         </div>
     </div>
 );
 
 const EditPlantPage: React.FC = () => {
-    const { id } = useParams<{ id: string }>(); // URL에서 식물 ID 가져오기
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>(); // URL에서 식물 ID 가져오기
     const { plants, updatePlant } = usePlants();
     const { uid } = useAuth();
 
-    // 1. 수정할 식물 찾기
-    const targetPlant = plants.find(p => p.id === id);
+    // 수정할 식물 찾기
+    const targetPlant = plants.find((p) => p.id === id);
 
-    // 2. 상태 관리 (초기값은 비워두고, useEffect에서 채움)
+    // 상태 관리 (초기값은 비워두고, useEffect에서 채움)
     const [name, setName] = useState('');
     const [species, setSpecies] = useState('');
     const [waterCycle, setWaterCycle] = useState(7);
@@ -60,7 +54,7 @@ const EditPlantPage: React.FC = () => {
     const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null); // 기존 이미지 주소
     const [isUploading, setIsUploading] = useState(false);
 
-    // 기존 데이터 불러와서 입력창에 채워넣기 (핵심!)
+    // 기존 데이터 불러와서 입력창에 채워넣기
     useEffect(() => {
         if (targetPlant) {
             setName(targetPlant.name);
@@ -83,7 +77,7 @@ const EditPlantPage: React.FC = () => {
             setSelectedFile(compressedFile);
             setPreviewUrl(URL.createObjectURL(compressedFile));
         } catch (error) {
-            console.error("이미지 압축 실패:", error);
+            console.error('이미지 압축 실패:', error);
             setSelectedFile(file);
         }
     };
@@ -117,12 +111,11 @@ const EditPlantPage: React.FC = () => {
             // 수정 요청
             await updatePlant(updatedPlant);
 
-            alert("수정되었습니다!");
+            alert('수정되었습니다!');
             navigate(`/plants/${id}`); // 상세 페이지로 돌아가기
-
         } catch (error) {
-            console.error("수정 실패:", error);
-            alert("수정 중 오류가 발생했습니다.");
+            console.error('수정 실패:', error);
+            alert('수정 중 오류가 발생했습니다.');
         } finally {
             setIsUploading(false);
         }
@@ -132,16 +125,16 @@ const EditPlantPage: React.FC = () => {
     if (!targetPlant) return <div className="p-10 text-center text-stone-500">데이터를 불러오는 중입니다...</div>;
 
     return (
-        <div className="max-w-xl mx-auto py-6 px-4">
-            {/* 헤더 */}
-            <div className="flex items-center mb-6">
-                <button onClick={() => navigate(-1)} className="mr-4 text-stone-500 hover:text-stone-800">
-                    <ArrowLeft />
+        <div className="w-full h-full p-4 pb-20 lg:pb-4 overflow-y-auto no-scrollbar">
+            {/* 상단 제목 */}
+            <div className="flex justify-between items-center mb-6">
+                <button onClick={() => navigate(-1)} className="flex items-center text-stone-500 ">
+                    <ArrowLeft size={14} className="mr-1" />
+                    <span className="text-sm">돌아가기</span>
                 </button>
-                <h1 className="text-2xl font-bold text-stone-800">식물 정보 수정 📝</h1>
             </div>
 
-            <form onSubmit={handleSubmit} className="bg-white p-6 rounded-3xl shadow-lg border border-stone-100">
+            <form onSubmit={handleSubmit} className="p-6 bg-white/50 border border-white rounded-3xl shadow-sm overflow-hidden">
                 {/* 사진 수정 영역 */}
                 <div className="mb-8 flex justify-center">
                     <label className="cursor-pointer group relative">
@@ -172,10 +165,10 @@ const EditPlantPage: React.FC = () => {
                 <InputField label="입양일" id="adoptedDate" value={adoptedDate} onChange={(e) => setAdoptedDate(e.target.value)} type="date" icon={Calendar} />
 
                 <div className="flex gap-3 mt-8">
-                    <button type="button" onClick={() => navigate(-1)} className="flex-1 py-3 text-stone-500 font-bold bg-stone-100 rounded-xl hover:bg-stone-200 transition-colors">
+                    <button type="button" onClick={() => navigate(-1)} className="flex-1 py-3 text-stone-500 font-bold bg-stone-200 rounded-full hover:bg-stone-300 transition-colors">
                         취소
                     </button>
-                    <button type="submit" disabled={isUploading} className="flex-1 py-3 text-white font-bold bg-primary-600 rounded-xl hover:bg-primary-700 shadow-md shadow-primary-200 transition-colors flex justify-center items-center">
+                    <button type="submit" disabled={isUploading} className="flex-1 py-3 text-white font-bold bg-primary-600 rounded-full hover:bg-primary-700 transition-colors flex justify-center items-center">
                         {isUploading ? <Loader2 className="animate-spin" /> : '수정 완료'}
                     </button>
                 </div>

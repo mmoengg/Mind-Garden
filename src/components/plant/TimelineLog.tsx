@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import type { CareLog, Mood } from '../../types/Plant';
-import {Droplet, PenTool, Zap, Smile, Cloud, Heart, Frown, type LucideIcon, Leaf} from 'lucide-react';
+import { Droplet, PenTool, Zap, Smile, Cloud, Heart, Frown, type LucideIcon, Leaf } from 'lucide-react';
 import clsx from 'clsx';
 
 interface TimelineLogProps {
@@ -37,30 +37,35 @@ const TimelineLog: React.FC<TimelineLogProps> = ({ log }) => {
 
     return (
         <div className="relative border-l-2 border-stone-200 pl-8 pb-8">
-
             {/* 타임라인 원형 마커 */}
-            <div className={clsx(
-                "absolute -left-3 top-0 w-6 h-6 rounded-full flex items-center justify-center text-white shadow-md",
-                logDetails.color // 로그 타입별 색상 적용
-            )}>
+            <div
+                className={clsx(
+                    'absolute -left-3 top-0 w-6 h-6 rounded-full flex items-center justify-center text-white shadow-sm',
+                    logDetails.color // 로그 타입별 색상 적용
+                )}
+            >
                 {React.createElement(logDetails.icon, { size: 12 })}
             </div>
 
             {/* 로그 내용 박스: 감정 배경색 적용 */}
-            <div className={clsx(
-                "bg-surface p-4 rounded-xl shadow-md transition-all hover:shadow-lg border",
-                moodBgColor, // 💡 감정 배경색 적용
-                log.mood ? 'border-primary-100' : 'border-stone-100'
-            )}>
+            <div
+                className={clsx(
+                    'bg-surface p-4 rounded-xl shadow-sm transition-all hover:shadow-sm border',
+                    moodBgColor, // 💡 감정 배경색 적용
+                    log.mood ? 'border-primary-100' : 'border-stone-100'
+                )}
+            >
                 <div className="flex justify-between items-center mb-3 border-b border-stone-100 pb-2">
                     <span className="text-sm font-semibold text-stone-600">{log.date}</span>
 
                     {/* 감정 기록 표시 (뱃지 디자인 강화) */}
                     {log.mood && MoodIcon && (
-                        <div className={clsx(
-                            "flex items-center text-xs font-medium px-2 py-1 rounded-full border",
-                            moodMap[log.mood].bgColor.replace('bg', 'border') // 배경색과 비슷한 테두리
-                        )}>
+                        <div
+                            className={clsx(
+                                'flex items-center text-xs font-medium px-2 py-1 rounded-full border',
+                                moodMap[log.mood].bgColor.replace('bg', 'border') // 배경색과 비슷한 테두리
+                            )}
+                        >
                             {React.createElement(MoodIcon, { size: 14, className: moodMap[log.mood].color })}
                             <span className="ml-1 text-stone-700 capitalize">{log.mood}</span>
                         </div>
@@ -75,15 +80,15 @@ const TimelineLog: React.FC<TimelineLogProps> = ({ log }) => {
                 )}
 
                 {/* 메모 내용 */}
-                {log.content && (
-                    <p className="text-stone-700 whitespace-pre-wrap mb-2">{log.content}</p>
-                )}
+                {log.content && <p className="text-stone-700 whitespace-pre-wrap mb-2">{log.content}</p>}
 
                 {/* 로그 타입 표시 */}
-                <span className={clsx(
-                    "mt-1 inline-block text-xs font-bold uppercase",
-                    logDetails.color.replace('bg', 'text') // 로그 타입 색상 적용
-                )}>
+                <span
+                    className={clsx(
+                        'mt-1 inline-block text-xs font-bold uppercase',
+                        logDetails.color.replace('bg', 'text') // 로그 타입 색상 적용
+                    )}
+                >
                     {logDetails.text}
                 </span>
             </div>
