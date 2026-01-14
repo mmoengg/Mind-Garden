@@ -1,17 +1,15 @@
 import React from 'react';
 import { useMoodAnalysis } from '../hooks/useMoodAnalysis.ts';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Cloud } from 'lucide-react';
 
 const MoodLogPage: React.FC = () => {
     const { moodCounts, totalLogs } = useMoodAnalysis();
 
     if (totalLogs === 0) {
         return (
-            <div className="p-12 text-center bg-surface rounded-3xl shadow-lg">
-                <Cloud size={48} className="mx-auto text-stone-400 mb-4" />
-                <h2 className="text-xl font-semibold text-stone-600">아직 기록된 마음 날씨가 없어요.</h2>
-                <p className="text-stone-500 mt-2">물을 주며 감정을 기록하면 여기에 그래프가 나타납니다.</p>
+            <div className="overflow-y-auto no-scrollbar relative pt-20 p-4 pb-20 lg:pt-28 lg:pb-4 w-full h-full ">
+                <h2 className="font-bold text-stone-600">아직 기록된 마음 날씨가 없어요.</h2>
+                <p className="text-sm text-stone-500 mt-2">물을 주며 감정을 기록하면 여기에 그래프가 나타납니다.</p>
             </div>
         );
     }

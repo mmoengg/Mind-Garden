@@ -61,19 +61,6 @@ const DashboardActionHub = () => {
                     ))}
                 </ul>
             </div>
-
-            {/*<div className="flex-1 bg-white/50 border border-white rounded-3xl shadow-sm p-6">*/}
-            {/*    {plants.length > 0 ? (*/}
-            {/*        <ul className="flex h-full gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar">*/}
-            {/*            {plants.map((plant) => (*/}
-            {/*                <BoardPlantCard key={plant.id} plant={plant} />*/}
-            {/*            ))}*/}
-            {/*        </ul>*/}
-            {/*    ) : (*/}
-            {/*        // 혹시 등록된 식물이 아예 하나도 없을 때 보여줄 메시지 (선택 사항)*/}
-            {/*        <div className="text-center text-gray-400 py-4">등록된 식물이 없어요 🌱</div>*/}
-            {/*    )}*/}
-            {/*</div>*/}
         </div>
     );
 };

@@ -7,7 +7,7 @@ import clsx from 'clsx';
 interface MoodModalProps {
     isOpen: boolean;
     onClose: () => void;
-    plant: Plant | null; // 어떤 식물에게 물을 주는지 알아야 함
+    plant: Plant | null;
 }
 
 // 5가지 감정 아이콘 매핑
@@ -74,7 +74,7 @@ const MoodModal: React.FC<MoodModalProps> = ({ isOpen, onClose, plant }) => {
                     <button type="button" onClick={handleClose} className="bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold py-2 px-4 rounded-xl">
                         취소
                     </button>
-                    <button onClick={handleConfirm} disabled={!content} className={clsx('font-bold py-2 px-4 rounded-xl shadow-md transition-colors', content ? 'bg-primary-600 hover:bg-primary-700 text-white' : 'bg-stone-300 text-stone-500 cursor-not-allowed')}>
+                    <button onClick={handleConfirm} disabled={!content} className={clsx('font-bold py-2 px-4 rounded-xl transition-colors', content ? 'bg-primary-600 hover:bg-primary-700 text-white' : 'bg-stone-300 text-stone-500 cursor-not-allowed')}>
                         기록 완료
                     </button>
                 </div>

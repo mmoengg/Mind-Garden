@@ -17,10 +17,10 @@ const BoardPlantCard: React.FC<PlantCardProps> = ({ plant }) => {
                         <span className="text-2xl">🌿</span>
                     </div>
                 )}
+                <p className="absolute left-0 bottom-0 p-5 w-full text-gray-800 backdrop-blur-md bg-white/50 shadow-md border-t border-t-white/50 whitespace-nowrap overflow-hidden text-sm font-bold text-ellipsis">{plant.name}</p>
             </Link>
 
             {/* 텍스트 영역 */}
-            <p className="w-full text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">{plant.name}</p>
         </li>
     );
 };
