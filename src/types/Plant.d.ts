@@ -2,7 +2,7 @@
  * 🌿 감정 상태 타입
  * 물을 줄 때 기록할 나의 기분입니다.
  */
-export type Mood = 'happy' | 'calm' | 'tired' | 'sad' | 'angry';
+export type Mood = 'happy' | 'calm' | 'tired' | 'sad' | 'angry' | null;
 
 /**
  * 💧 관리 기록 타입 (Log)
