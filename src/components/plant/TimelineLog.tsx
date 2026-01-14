@@ -7,8 +7,8 @@ interface TimelineLogProps {
     log: CareLog;
 }
 
-// 1. 감정 아이콘, 색상, 배경 매핑 (배경색 추가)
-const moodMap: Record<Mood, { icon: LucideIcon; color: string; bgColor: string }> = {
+// 감정 아이콘, 색상, 배경 매핑 (배경색 추가)
+const moodMap: Record<NonNullable<Mood>, { icon: LucideIcon; color: string; bgColor: string }> = {
     happy: { icon: Heart, color: 'text-red-500', bgColor: 'bg-red-50' }, // 기쁨은 활력의 빨간색 계열
     calm: { icon: Smile, color: 'text-primary-600', bgColor: 'bg-primary-50' }, // 평온은 메인 녹색 계열
     tired: { icon: Cloud, color: 'text-stone-500', bgColor: 'bg-stone-100' },
@@ -51,7 +51,7 @@ const TimelineLog: React.FC<TimelineLogProps> = ({ log }) => {
             <div
                 className={clsx(
                     'bg-surface p-4 rounded-xl shadow-sm transition-all hover:shadow-sm border',
-                    moodBgColor, // 💡 감정 배경색 적용
+                    moodBgColor, // 감정 배경색 적용
                     log.mood ? 'border-primary-100' : 'border-stone-100'
                 )}
             >
