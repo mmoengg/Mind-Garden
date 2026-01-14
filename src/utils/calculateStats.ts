@@ -1,10 +1,20 @@
+interface DiaryData {
+    date: string;
+    emotion: string;
+    content?: string;
+}
+
+interface WateringLogData {
+    status: string;
+}
+
 /**
  * 사용자 활동 데이터를 받아서 레이더 차트용 점수를 계산하는 함수
  * @param {Array} diaries - 일기/기록 데이터 배열
  * @param {Array} wateringLogs - 물주기 기록 배열
  * @returns {Array} - Recharts에 바로 넣을 수 있는 데이터 포맷
  */
-export const calculateGardenStats = (diaries, wateringLogs) => {
+export const calculateGardenStats = (diaries: DiaryData[], wateringLogs: WateringLogData[]) => {
     const now = new Date();
     const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
